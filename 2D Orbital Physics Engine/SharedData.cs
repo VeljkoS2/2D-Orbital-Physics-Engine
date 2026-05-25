@@ -14,6 +14,7 @@ namespace _2D_Orbital_Physics_Engine
 {
     public static class SharedData
     {
+        public static bool UseAnalytic { get; set; } = false;
         public static Vector FocusPosition { get; set; } = new Vector();
         public static double c { get; } = 299792458;
         public static double G { get; } = 6.6743e-11;

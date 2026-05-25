@@ -122,12 +122,14 @@
   </metadata>
   <data name="label35.Text" xml:space="preserve">
     <value>GENERAL: 
-Simulate Orbits/Hyperbolas - Enables/disables visualization of all or just hyperbolic orbits.
+Simulate Orbits - Enables/disables visualization of all orbits.
+Predict Intersections - Enables/disables predictions of intersections.
 Small-Scale Timewarp - Changes to a timewarp ranging from 1x to 5 000x.
+Input Units - Chooses the default input unit.
 Precision Factor - Sets the minimum precision factor, higher number means less precise.
 Orbit Draw Limit - Higher the number the more orbits will be drawn.
 Reset - Resets the whole simulation.
-PRESETS:
+SYSTEM PRESETS:
 List of pre-made systems ready to be loaded.</value>
   </data>
   <data name="label36.Text" xml:space="preserve">
@@ -147,6 +149,13 @@ HEADING CONTROLS
 - Planets - They apear with a mass above 1e7 kg.
 - Spaceships - Anything with a mass below 1e7 kg.
              - Can be controled by focusing on it.</value>
+  </data>
+  <data name="label42.Text" xml:space="preserve">
+    <value>Input the mass [kg] of the body or choose one of the presets.
+Enter a custom name of the body.
+If the menu is opened while focuse on a body:
+Place In Orbit - When checked the body you spawn will be spawned at the chosen height
+Height - Height of the orbit from the ground in default units.</value>
   </data>
   <metadata name="$this.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

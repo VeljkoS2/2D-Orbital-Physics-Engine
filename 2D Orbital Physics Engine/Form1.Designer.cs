@@ -48,6 +48,8 @@
             textBox1 = new TextBox();
             textBox2 = new TextBox();
             groupBox2 = new GroupBox();
+            label8 = new Label();
+            comboBox4 = new ComboBox();
             button15 = new Button();
             button2 = new Button();
             snapNumericUpDown2 = new SnapNumericUpDown();
@@ -58,8 +60,8 @@
             button3 = new Button();
             label18 = new Label();
             comboBox1 = new ComboBox();
-            label17 = new Label();
             checkBox4 = new CheckBox();
+            label17 = new Label();
             label24 = new Label();
             button1 = new Button();
             label9 = new Label();
@@ -85,6 +87,7 @@
             groupBox3 = new GroupBox();
             label29 = new Label();
             groupBox4 = new GroupBox();
+            label44 = new Label();
             button17 = new Button();
             button10 = new Button();
             button4 = new Button();
@@ -94,18 +97,21 @@
             label31 = new Label();
             label30 = new Label();
             groupBox5 = new GroupBox();
+            label45 = new Label();
             button18 = new Button();
             label35 = new Label();
             button6 = new Button();
             button5 = new Button();
             label39 = new Label();
             groupBox6 = new GroupBox();
+            label46 = new Label();
             button16 = new Button();
             label36 = new Label();
             button7 = new Button();
             button8 = new Button();
             label37 = new Label();
             groupBox7 = new GroupBox();
+            label48 = new Label();
             button19 = new Button();
             label38 = new Label();
             button9 = new Button();
@@ -117,6 +123,7 @@
             button12 = new Button();
             button11 = new Button();
             groupBox9 = new GroupBox();
+            label19 = new Label();
             textBox12 = new TextBox();
             checkBox1 = new CheckBox();
             textBox13 = new TextBox();
@@ -131,6 +138,15 @@
             label7 = new Label();
             button23 = new Button();
             comboBox3 = new ComboBox();
+            groupBox11 = new GroupBox();
+            label47 = new Label();
+            button26 = new Button();
+            label42 = new Label();
+            label43 = new Label();
+            button24 = new Button();
+            label20 = new Label();
+            button25 = new Button();
+            label41 = new Label();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -144,11 +160,12 @@
             groupBox8.SuspendLayout();
             groupBox9.SuspendLayout();
             groupBox10.SuspendLayout();
+            groupBox11.SuspendLayout();
             SuspendLayout();
             // 
             // timer1
             // 
-            timer1.Interval = 1;
+            timer1.Interval = 15;
             timer1.Tick += timer1_Tick;
             // 
             // trackBar1
@@ -162,7 +179,7 @@
             trackBar1.Size = new Size(45, 654);
             trackBar1.TabIndex = 3;
             trackBar1.TabStop = false;
-            trackBar1.Value = 3;
+            trackBar1.Value = 1;
             trackBar1.ValueChanged += trackBar1_ValueChanged;
             trackBar1.KeyDown += trackBar1_KeyDown;
             // 
@@ -184,7 +201,7 @@
             groupBox1.Controls.Add(textBox1);
             groupBox1.Controls.Add(textBox2);
             groupBox1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            groupBox1.Location = new Point(321, 9);
+            groupBox1.Location = new Point(95, 104);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(487, 214);
             groupBox1.TabIndex = 7;
@@ -209,7 +226,7 @@
             textBox11.Location = new Point(8, 157);
             textBox11.Name = "textBox11";
             textBox11.ReadOnly = true;
-            textBox11.Size = new Size(133, 16);
+            textBox11.Size = new Size(214, 16);
             textBox11.TabIndex = 59;
             textBox11.Text = "test";
             // 
@@ -318,7 +335,7 @@
             textBox3.Location = new Point(8, 102);
             textBox3.Name = "textBox3";
             textBox3.ReadOnly = true;
-            textBox3.Size = new Size(133, 16);
+            textBox3.Size = new Size(214, 16);
             textBox3.TabIndex = 51;
             textBox3.Text = "test";
             // 
@@ -329,7 +346,7 @@
             textBox1.Location = new Point(8, 73);
             textBox1.Name = "textBox1";
             textBox1.ReadOnly = true;
-            textBox1.Size = new Size(133, 16);
+            textBox1.Size = new Size(214, 16);
             textBox1.TabIndex = 49;
             textBox1.Text = "test";
             // 
@@ -340,13 +357,15 @@
             textBox2.Location = new Point(8, 128);
             textBox2.Name = "textBox2";
             textBox2.ReadOnly = true;
-            textBox2.Size = new Size(133, 16);
+            textBox2.Size = new Size(214, 16);
             textBox2.TabIndex = 50;
             textBox2.Text = "test";
             // 
             // groupBox2
             // 
             groupBox2.BackColor = Color.DimGray;
+            groupBox2.Controls.Add(label8);
+            groupBox2.Controls.Add(comboBox4);
             groupBox2.Controls.Add(button15);
             groupBox2.Controls.Add(button2);
             groupBox2.Controls.Add(snapNumericUpDown2);
@@ -357,8 +376,8 @@
             groupBox2.Controls.Add(button3);
             groupBox2.Controls.Add(label18);
             groupBox2.Controls.Add(comboBox1);
-            groupBox2.Controls.Add(label17);
             groupBox2.Controls.Add(checkBox4);
+            groupBox2.Controls.Add(label17);
             groupBox2.Controls.Add(label24);
             groupBox2.Controls.Add(button1);
             groupBox2.Font = new Font("Segoe UI", 9F, FontStyle.Bold | FontStyle.Underline);
@@ -369,6 +388,27 @@
             groupBox2.TabStop = false;
             groupBox2.Text = "SETTINGS";
             groupBox2.Visible = false;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            label8.Location = new Point(74, 128);
+            label8.Name = "label8";
+            label8.Size = new Size(69, 15);
+            label8.TabIndex = 67;
+            label8.Text = "Input Units";
+            // 
+            // comboBox4
+            // 
+            comboBox4.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox4.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            comboBox4.FormattingEnabled = true;
+            comboBox4.Location = new Point(9, 120);
+            comboBox4.Name = "comboBox4";
+            comboBox4.Size = new Size(59, 23);
+            comboBox4.TabIndex = 66;
+            comboBox4.SelectedIndexChanged += comboBox4_SelectedIndexChanged;
             // 
             // button15
             // 
@@ -389,7 +429,7 @@
             button2.BackColor = Color.LightGray;
             button2.FlatStyle = FlatStyle.Popup;
             button2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            button2.Location = new Point(87, 187);
+            button2.Location = new Point(237, 187);
             button2.Name = "button2";
             button2.Size = new Size(123, 23);
             button2.TabIndex = 31;
@@ -401,19 +441,19 @@
             // 
             snapNumericUpDown2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             snapNumericUpDown2.Increment = new decimal(new int[] { 10, 0, 0, 0 });
-            snapNumericUpDown2.Location = new Point(6, 117);
+            snapNumericUpDown2.Location = new Point(9, 152);
             snapNumericUpDown2.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
             snapNumericUpDown2.Name = "snapNumericUpDown2";
             snapNumericUpDown2.Size = new Size(59, 23);
             snapNumericUpDown2.TabIndex = 30;
-            snapNumericUpDown2.Value = new decimal(new int[] { 50, 0, 0, 0 });
+            snapNumericUpDown2.Value = new decimal(new int[] { 20, 0, 0, 0 });
             snapNumericUpDown2.ValueChanged += snapNumericUpDown2_ValueChanged;
             // 
             // label25
             // 
             label25.AutoSize = true;
             label25.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            label25.Location = new Point(71, 151);
+            label25.Location = new Point(74, 191);
             label25.Name = "label25";
             label25.Size = new Size(100, 15);
             label25.TabIndex = 29;
@@ -422,7 +462,7 @@
             // snapNumericUpDown1
             // 
             snapNumericUpDown1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            snapNumericUpDown1.Location = new Point(6, 149);
+            snapNumericUpDown1.Location = new Point(9, 183);
             snapNumericUpDown1.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
             snapNumericUpDown1.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
             snapNumericUpDown1.Name = "snapNumericUpDown1";
@@ -488,6 +528,7 @@
             // 
             // comboBox1
             // 
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             comboBox1.FormattingEnabled = true;
             comboBox1.Location = new Point(212, 43);
@@ -495,19 +536,10 @@
             comboBox1.Size = new Size(148, 23);
             comboBox1.TabIndex = 23;
             // 
-            // label17
-            // 
-            label17.AutoSize = true;
-            label17.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            label17.Location = new Point(71, 119);
-            label17.Name = "label17";
-            label17.Size = new Size(95, 15);
-            label17.TabIndex = 22;
-            label17.Text = "Precision Factor";
-            // 
             // checkBox4
             // 
             checkBox4.AutoSize = true;
+            checkBox4.BackColor = Color.Transparent;
             checkBox4.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             checkBox4.ForeColor = Color.Black;
             checkBox4.ImageAlign = ContentAlignment.MiddleRight;
@@ -516,8 +548,18 @@
             checkBox4.Size = new Size(149, 19);
             checkBox4.TabIndex = 20;
             checkBox4.Text = "Small-Scale Timewarp";
-            checkBox4.UseVisualStyleBackColor = true;
+            checkBox4.UseVisualStyleBackColor = false;
             checkBox4.CheckedChanged += checkBox4_CheckedChanged;
+            // 
+            // label17
+            // 
+            label17.AutoSize = true;
+            label17.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            label17.Location = new Point(74, 160);
+            label17.Name = "label17";
+            label17.Size = new Size(95, 15);
+            label17.TabIndex = 22;
+            label17.Text = "Precision Factor";
             // 
             // label24
             // 
@@ -535,7 +577,7 @@
             button1.FlatStyle = FlatStyle.Popup;
             button1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             button1.ForeColor = Color.Black;
-            button1.Location = new Point(6, 187);
+            button1.Location = new Point(366, 187);
             button1.Name = "button1";
             button1.Size = new Size(75, 23);
             button1.TabIndex = 8;
@@ -808,6 +850,7 @@
             // groupBox4
             // 
             groupBox4.BackColor = Color.DimGray;
+            groupBox4.Controls.Add(label44);
             groupBox4.Controls.Add(button17);
             groupBox4.Controls.Add(button10);
             groupBox4.Controls.Add(button4);
@@ -824,6 +867,17 @@
             groupBox4.TabStop = false;
             groupBox4.Text = "MORE INFORMATION";
             groupBox4.Visible = false;
+            // 
+            // label44
+            // 
+            label44.AutoSize = true;
+            label44.BackColor = Color.Transparent;
+            label44.ForeColor = Color.Black;
+            label44.Location = new Point(246, 191);
+            label44.Name = "label44";
+            label44.Size = new Size(26, 15);
+            label44.TabIndex = 61;
+            label44.Text = "1/5";
             // 
             // button17
             // 
@@ -873,9 +927,9 @@
             label34.ForeColor = Color.Black;
             label34.Location = new Point(15, 166);
             label34.Name = "label34";
-            label34.Size = new Size(376, 15);
+            label34.Size = new Size(349, 15);
             label34.TabIndex = 35;
-            label34.Text = "A/LEFT ARROW and D/RIGHT ARROW - Changes the focused body.";
+            label34.Text = "LEFT ARROW and RIGHT ARROW - Changes the focused body.";
             // 
             // label33
             // 
@@ -883,7 +937,7 @@
             label33.BackColor = Color.Transparent;
             label33.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label33.ForeColor = Color.Black;
-            label33.Location = new Point(15, 135);
+            label33.Location = new Point(15, 143);
             label33.Name = "label33";
             label33.Size = new Size(389, 15);
             label33.TabIndex = 34;
@@ -895,11 +949,11 @@
             label32.BackColor = Color.Transparent;
             label32.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label32.ForeColor = Color.Black;
-            label32.Location = new Point(15, 92);
+            label32.Location = new Point(15, 88);
             label32.Name = "label32";
-            label32.Size = new Size(454, 30);
+            label32.Size = new Size(319, 45);
             label32.TabIndex = 33;
-            label32.Text = "RMB - Used to move around by holding and dragging.\r\n          - If pressed while focused on a body, a body will be placed in a circular orbit.";
+            label32.Text = "RMB - Used to move around by holding and dragging.\r\n          - If pressed on a body it will open the Actoin Menu.\r\n          - Otherwise it will open the Spawn Body Menu.";
             // 
             // label31
             // 
@@ -928,6 +982,7 @@
             // groupBox5
             // 
             groupBox5.BackColor = Color.DimGray;
+            groupBox5.Controls.Add(label45);
             groupBox5.Controls.Add(button18);
             groupBox5.Controls.Add(label35);
             groupBox5.Controls.Add(button6);
@@ -941,6 +996,17 @@
             groupBox5.TabStop = false;
             groupBox5.Text = "MORE INFORMATION";
             groupBox5.Visible = false;
+            // 
+            // label45
+            // 
+            label45.AutoSize = true;
+            label45.BackColor = Color.Transparent;
+            label45.ForeColor = Color.Black;
+            label45.Location = new Point(246, 191);
+            label45.Name = "label45";
+            label45.Size = new Size(26, 15);
+            label45.TabIndex = 62;
+            label45.Text = "2/5";
             // 
             // button18
             // 
@@ -962,9 +1028,9 @@
             label35.BackColor = Color.Transparent;
             label35.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label35.ForeColor = Color.Black;
-            label35.Location = new Point(15, 57);
+            label35.Location = new Point(15, 37);
             label35.Name = "label35";
-            label35.Size = new Size(498, 120);
+            label35.Size = new Size(494, 150);
             label35.TabIndex = 37;
             label35.Text = resources.GetString("label35.Text");
             // 
@@ -1000,7 +1066,7 @@
             label39.BackColor = Color.Transparent;
             label39.Font = new Font("Segoe UI", 9F, FontStyle.Bold | FontStyle.Underline);
             label39.ForeColor = Color.Black;
-            label39.Location = new Point(15, 32);
+            label39.Location = new Point(15, 19);
             label39.Name = "label39";
             label39.Size = new Size(77, 15);
             label39.TabIndex = 31;
@@ -1009,6 +1075,7 @@
             // groupBox6
             // 
             groupBox6.BackColor = Color.DimGray;
+            groupBox6.Controls.Add(label46);
             groupBox6.Controls.Add(button16);
             groupBox6.Controls.Add(label36);
             groupBox6.Controls.Add(button7);
@@ -1022,6 +1089,17 @@
             groupBox6.TabStop = false;
             groupBox6.Text = "MORE INFORMATION";
             groupBox6.Visible = false;
+            // 
+            // label46
+            // 
+            label46.AutoSize = true;
+            label46.BackColor = Color.Transparent;
+            label46.ForeColor = Color.Black;
+            label46.Location = new Point(246, 191);
+            label46.Name = "label46";
+            label46.Size = new Size(26, 15);
+            label46.TabIndex = 63;
+            label46.Text = "4/5";
             // 
             // button16
             // 
@@ -1090,6 +1168,7 @@
             // groupBox7
             // 
             groupBox7.BackColor = Color.DimGray;
+            groupBox7.Controls.Add(label48);
             groupBox7.Controls.Add(button19);
             groupBox7.Controls.Add(label38);
             groupBox7.Controls.Add(button9);
@@ -1102,6 +1181,17 @@
             groupBox7.TabStop = false;
             groupBox7.Text = "MORE INFORMATION";
             groupBox7.Visible = false;
+            // 
+            // label48
+            // 
+            label48.AutoSize = true;
+            label48.BackColor = Color.Transparent;
+            label48.ForeColor = Color.Black;
+            label48.Location = new Point(246, 191);
+            label48.Name = "label48";
+            label48.Size = new Size(26, 15);
+            label48.TabIndex = 65;
+            label48.Text = "5/5";
             // 
             // button19
             // 
@@ -1240,6 +1330,7 @@
             // groupBox9
             // 
             groupBox9.BackColor = Color.DimGray;
+            groupBox9.Controls.Add(label19);
             groupBox9.Controls.Add(textBox12);
             groupBox9.Controls.Add(checkBox1);
             groupBox9.Controls.Add(textBox13);
@@ -1249,13 +1340,24 @@
             groupBox9.Controls.Add(button20);
             groupBox9.Controls.Add(comboBox2);
             groupBox9.Font = new Font("Segoe UI", 9F, FontStyle.Bold | FontStyle.Underline);
-            groupBox9.Location = new Point(708, 546);
+            groupBox9.Location = new Point(914, 118);
             groupBox9.Name = "groupBox9";
             groupBox9.Size = new Size(150, 200);
             groupBox9.TabIndex = 60;
             groupBox9.TabStop = false;
             groupBox9.Text = "SPAWN BODY";
             groupBox9.Visible = false;
+            // 
+            // label19
+            // 
+            label19.BackColor = Color.Silver;
+            label19.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            label19.ForeColor = Color.Black;
+            label19.Location = new Point(119, 137);
+            label19.Name = "label19";
+            label19.Size = new Size(18, 21);
+            label19.TabIndex = 66;
+            label19.Text = "m";
             // 
             // textBox12
             // 
@@ -1264,7 +1366,7 @@
             textBox12.Cursor = Cursors.Hand;
             textBox12.Enabled = false;
             textBox12.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            textBox12.Location = new Point(21, 136);
+            textBox12.Location = new Point(13, 136);
             textBox12.MaxLength = 100;
             textBox12.Name = "textBox12";
             textBox12.PlaceholderText = "Enter Height";
@@ -1361,7 +1463,7 @@
             groupBox10.Controls.Add(button23);
             groupBox10.Controls.Add(comboBox3);
             groupBox10.Font = new Font("Segoe UI", 9F, FontStyle.Bold | FontStyle.Underline);
-            groupBox10.Location = new Point(552, 546);
+            groupBox10.Location = new Point(758, 118);
             groupBox10.Name = "groupBox10";
             groupBox10.Size = new Size(150, 141);
             groupBox10.TabIndex = 66;
@@ -1446,12 +1548,131 @@
             comboBox3.SelectedIndexChanged += comboBox3_SelectedIndexChanged;
             comboBox3.TextUpdate += comboBox3_TextUpdate;
             // 
+            // groupBox11
+            // 
+            groupBox11.BackColor = Color.DimGray;
+            groupBox11.Controls.Add(label47);
+            groupBox11.Controls.Add(button26);
+            groupBox11.Controls.Add(label42);
+            groupBox11.Controls.Add(label43);
+            groupBox11.Controls.Add(button24);
+            groupBox11.Controls.Add(label20);
+            groupBox11.Controls.Add(button25);
+            groupBox11.Controls.Add(label41);
+            groupBox11.Font = new Font("Segoe UI", 9F, FontStyle.Bold | FontStyle.Underline);
+            groupBox11.Location = new Point(94, 546);
+            groupBox11.Name = "groupBox11";
+            groupBox11.Size = new Size(517, 216);
+            groupBox11.TabIndex = 61;
+            groupBox11.TabStop = false;
+            groupBox11.Text = "MORE INFORMATION";
+            groupBox11.Visible = false;
+            // 
+            // label47
+            // 
+            label47.AutoSize = true;
+            label47.BackColor = Color.Transparent;
+            label47.ForeColor = Color.Black;
+            label47.Location = new Point(246, 191);
+            label47.Name = "label47";
+            label47.Size = new Size(26, 15);
+            label47.TabIndex = 64;
+            label47.Text = "3/5";
+            // 
+            // button26
+            // 
+            button26.BackColor = Color.LightGray;
+            button26.FlatStyle = FlatStyle.Flat;
+            button26.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            button26.Location = new Point(421, 187);
+            button26.Name = "button26";
+            button26.Size = new Size(91, 23);
+            button26.TabIndex = 63;
+            button26.Text = "NEXT";
+            button26.UseVisualStyleBackColor = false;
+            button26.Click += button26_Click;
+            // 
+            // label42
+            // 
+            label42.AutoSize = true;
+            label42.BackColor = Color.Transparent;
+            label42.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            label42.ForeColor = Color.Black;
+            label42.Location = new Point(15, 107);
+            label42.Name = "label42";
+            label42.Size = new Size(497, 75);
+            label42.TabIndex = 62;
+            label42.Text = resources.GetString("label42.Text");
+            // 
+            // label43
+            // 
+            label43.AutoSize = true;
+            label43.BackColor = Color.Transparent;
+            label43.Font = new Font("Segoe UI", 9F, FontStyle.Bold | FontStyle.Underline);
+            label43.ForeColor = Color.Black;
+            label43.Location = new Point(15, 90);
+            label43.Name = "label43";
+            label43.Size = new Size(123, 15);
+            label43.TabIndex = 61;
+            label43.Text = "SPAWN BODY MENU";
+            // 
+            // button24
+            // 
+            button24.BackColor = Color.Tomato;
+            button24.FlatStyle = FlatStyle.Popup;
+            button24.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            button24.ForeColor = Color.White;
+            button24.Location = new Point(496, 0);
+            button24.Name = "button24";
+            button24.Size = new Size(21, 23);
+            button24.TabIndex = 60;
+            button24.Text = "X";
+            button24.UseVisualStyleBackColor = false;
+            // 
+            // label20
+            // 
+            label20.AutoSize = true;
+            label20.BackColor = Color.Transparent;
+            label20.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            label20.ForeColor = Color.Black;
+            label20.Location = new Point(15, 39);
+            label20.Name = "label20";
+            label20.Size = new Size(443, 45);
+            label20.TabIndex = 37;
+            label20.Text = "FOCUS - Puts the body in focus, when presssed again it centers it in the screen.\r\nDELETE - Deletes the body.\r\nRENAME - Renames the body to the name inputed into the text box next to it.";
+            // 
+            // button25
+            // 
+            button25.BackColor = Color.LightGray;
+            button25.FlatStyle = FlatStyle.Flat;
+            button25.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            button25.Location = new Point(6, 187);
+            button25.Name = "button25";
+            button25.Size = new Size(91, 23);
+            button25.TabIndex = 36;
+            button25.Text = "PREV";
+            button25.UseVisualStyleBackColor = false;
+            button25.Click += button25_Click;
+            // 
+            // label41
+            // 
+            label41.AutoSize = true;
+            label41.BackColor = Color.Transparent;
+            label41.Font = new Font("Segoe UI", 9F, FontStyle.Bold | FontStyle.Underline);
+            label41.ForeColor = Color.Black;
+            label41.Location = new Point(15, 19);
+            label41.Name = "label41";
+            label41.Size = new Size(89, 15);
+            label41.TabIndex = 31;
+            label41.Text = "ACTION MENU";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Black;
             ClientSize = new Size(1673, 912);
+            Controls.Add(groupBox11);
             Controls.Add(groupBox10);
             Controls.Add(groupBox9);
             Controls.Add(groupBox8);
@@ -1510,6 +1731,8 @@
             groupBox9.PerformLayout();
             groupBox10.ResumeLayout(false);
             groupBox10.PerformLayout();
+            groupBox11.ResumeLayout(false);
+            groupBox11.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1616,5 +1839,21 @@
         private Button button23;
         private ComboBox comboBox3;
         private TextBox textBox14;
+        private Label label8;
+        private ComboBox comboBox4;
+        private Label label19;
+        private GroupBox groupBox11;
+        private Button button24;
+        private Label label20;
+        private Button button25;
+        private Label label41;
+        private Label label42;
+        private Label label43;
+        private Label label44;
+        private Label label45;
+        private Label label46;
+        private Label label48;
+        private Label label47;
+        private Button button26;
     }
 }

@@ -28,7 +28,7 @@ namespace _2D_Orbital_Physics_Engine
         Graphics g;
         double ZoomFactor = 1.3;
         double dt = 0;
-        double timeScale = 1000000;
+        double timeScale = 10000;
         Pen pen = new Pen(Color.White);
         SolidBrush brush = new SolidBrush(Color.White);
         Celestial_Body focus;
@@ -126,6 +126,8 @@ namespace _2D_Orbital_Physics_Engine
                 groupBox3.Visible = false;
                 focused = true;
             }
+            if (placeInOrbit && double.TryParse(textBox12.Text, out double result) && result > 0)
+                spawnDistance = result * Math.Pow(1000, defaultUnit) + focus.Radius;
         }
         int CheckIfClicked(Vector MouseClick)
         {
@@ -251,6 +253,7 @@ namespace _2D_Orbital_Physics_Engine
 
             groupBox4.Location = new Point(SharedData.SW / 2 + groupBox2.Size.Width / 2 + 10, SharedData.SH / 2 - groupBox2.Size.Height / 2);
             groupBox5.Location = new Point(SharedData.SW / 2 + groupBox2.Size.Width / 2 + 10, SharedData.SH / 2 - groupBox2.Size.Height / 2);
+            groupBox11.Location = new Point(SharedData.SW / 2 + groupBox2.Size.Width / 2 + 10, SharedData.SH / 2 - groupBox2.Size.Height / 2);
             groupBox6.Location = new Point(SharedData.SW / 2 + groupBox2.Size.Width / 2 + 10, SharedData.SH / 2 - groupBox2.Size.Height / 2);
             groupBox7.Location = new Point(SharedData.SW / 2 + groupBox2.Size.Width / 2 + 10, SharedData.SH / 2 - groupBox2.Size.Height / 2);
 
@@ -297,6 +300,14 @@ namespace _2D_Orbital_Physics_Engine
             comboBox3.Items.Add("Sgr A* (BH)");
             comboBox3.Items.Add("Spaceship");
             comboBox3.Items.Add("Viltrum");
+
+            comboBox4.Items.Add("m");
+            comboBox4.Items.Add("km");
+            comboBox4.Items.Add("Mm");
+            comboBox4.Items.Add("AU");
+            comboBox4.Items.Add("LY");
+            comboBox4.SelectedIndex = 0;
+            label19.Text = "m";
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -305,6 +316,8 @@ namespace _2D_Orbital_Physics_Engine
             SharedData.Offset = new Vector();
             focus = null;
             focused = false;
+            placeInOrbit = false;
+            checkBox1.Checked = false;
             nextIntersectionUpdate = 0;
             SharedData.totalElapsedTime = 63338889600.0;
             SharedData.Scale = SharedData.AU / 300;
@@ -385,8 +398,8 @@ namespace _2D_Orbital_Physics_Engine
             if (dist == 0) return 0;
             return dist * Math.Pow(body.Mass / parent.Mass, 2.0 / 5.0);
         }
-        double precisionFactor = 50.0;
-        double dynamicFactor = 50.0;
+        double precisionFactor = 20.0;
+        double dynamicFactor = 20.0;
         double nextIntersectionUpdate = 0;
         double nextIdT = 0;
         Celestial_Body newBody = null;
@@ -425,22 +438,37 @@ namespace _2D_Orbital_Physics_Engine
             }
         }
 
-        void UpdateFactor(double elapsedMs)
+        void UpdateFactor(double elapsedMs, int substepCount)
         {
-            if (elapsedMs > 50)
-                dynamicFactor = Math.Min(dynamicFactor * 1.5, precisionFactor * 100);
-            else if (elapsedMs > 17)
-                dynamicFactor = Math.Min(dynamicFactor * 1.1, precisionFactor * 100);
-            else if (elapsedMs < 2.0f && dynamicFactor > precisionFactor)
+            double targetMs = 16.0;
+            double ratio = elapsedMs / targetMs;
+
+            if (ratio > 2.0)
+                dynamicFactor = Math.Min(dynamicFactor * ratio, precisionFactor * 100);
+            else if (ratio > 1.0)
+                dynamicFactor = Math.Min(dynamicFactor * (1.0 + (ratio - 1.0) * 0.5), precisionFactor * 100);
+            else if (ratio < 0.3 && dynamicFactor > precisionFactor)
             {
-                dynamicFactor *= 0.5;
+                dynamicFactor *= Math.Max(0.5, ratio + 0.3);
                 if (dynamicFactor < precisionFactor) dynamicFactor = precisionFactor;
             }
-            else if (elapsedMs < 5 && dynamicFactor > precisionFactor)
+            else if (ratio < 0.7 && dynamicFactor > precisionFactor)
+            {
+                dynamicFactor *= 0.95;
+                if (dynamicFactor < precisionFactor) dynamicFactor = precisionFactor;
+            }
+
+            // scale substep thresholds with precisionFactor
+            double lowSubsteps = precisionFactor * 0.1;   // e.g. 5 at pf=50, 1 at pf=10
+            double highSubsteps = precisionFactor * 20.0;  // e.g. 1000 at pf=50, 200 at pf=10
+
+            if (substepCount < lowSubsteps && dynamicFactor > precisionFactor)
             {
                 dynamicFactor *= 0.9;
                 if (dynamicFactor < precisionFactor) dynamicFactor = precisionFactor;
             }
+            if (substepCount > highSubsteps)
+                dynamicFactor = Math.Min(dynamicFactor * 1.5, precisionFactor * 100);
         }
 
         double DecideSubDT(double targetDt, double totalTimeThisFrame)
@@ -590,7 +618,7 @@ namespace _2D_Orbital_Physics_Engine
             watch.Stop();
             SharedData.totalElapsedTime += totalTimeThisFrame;
 
-            UpdateFactor(watch.ElapsedMilliseconds);
+            UpdateFactor(watch.ElapsedMilliseconds, substepCount);
 
             if (SharedData.DrawOrbits && SharedData.bodies.Count > 1)
             {
@@ -942,6 +970,8 @@ namespace _2D_Orbital_Physics_Engine
                     if (SharedData.Offset.X != oldOffX || SharedData.Offset.Y != oldOffY)
                     {
                         focused = false;
+                        placeInOrbit = false;
+                        checkBox1.Checked = false;
                         Controling = false;
                         groupBox3.Visible = false;
                         shouldOpenSpawnMenu = false;
@@ -1025,7 +1055,7 @@ namespace _2D_Orbital_Physics_Engine
                         Vector velocity = focus.Velocity + (~(distVPerp) % CalcOrbitalVelocity(dist, focus.Mass + bodyMass));
                         newBody = ChooseBody(position, velocity, currInd);
                         if (newBody == null) newBody = SharedData.CreaetBody(position.X, position.Y, bodyMass, velocity);
-                        if(pendingName != "") newBody.Name = pendingName;
+                        if (pendingName != "") newBody.Name = pendingName;
                         label23.Text = "Bodies: " + SharedData.bodies.Count.ToString();
                         newBody.DominantBody = focus;
                         SharedData.bodies.Add(newBody);
@@ -1199,6 +1229,9 @@ namespace _2D_Orbital_Physics_Engine
             foreach (var body in SharedData.bodies)
                 body.Initialized = false;
             dt = (timer1.Interval / 1000.0) * timeScale;
+            if (timeScale >= 1000000) SharedData.UseAnalytic = true;
+            else SharedData.UseAnalytic = false;
+            SharedData.UseAnalytic = true;
         }
         void TimeScaleLabel()
         {
@@ -1314,6 +1347,7 @@ namespace _2D_Orbital_Physics_Engine
                 button11.Text = "FOCUS";
                 groupBox9.Visible = false;
                 groupBox10.Visible = false;
+                groupBox11.Visible = false;
             }
             else if (e.KeyCode == Keys.Right)
             {
@@ -1624,12 +1658,12 @@ namespace _2D_Orbital_Physics_Engine
         private void button5_Click(object sender, EventArgs e)
         {
             groupBox5.Visible = false;
-            groupBox6.Visible = true;
+            groupBox11.Visible = true;
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
-            groupBox5.Visible = true;
+            groupBox11.Visible = true;
             groupBox6.Visible = false;
         }
 
@@ -1771,6 +1805,8 @@ namespace _2D_Orbital_Physics_Engine
             {
                 focus = null;
                 focused = false;
+                placeInOrbit = false;
+                checkBox1.Checked = false;
             }
             SharedData.bodies.Remove(SharedData.bodies[actionInd]);
             label23.Text = "Bodies: " + SharedData.bodies.Count.ToString();
@@ -1883,7 +1919,7 @@ namespace _2D_Orbital_Physics_Engine
             if (currInd == -1) bodyMass = pendingMass;
             validMass = true;
             if (placeInOrbit && double.TryParse(textBox12.Text, out double result) && result > 0)
-                spawnDistance = result + focus.Radius;
+                spawnDistance = result * Math.Pow(1000, defaultUnit) + focus.Radius;
         }
 
         bool placeInOrbit = false;
@@ -2003,6 +2039,29 @@ namespace _2D_Orbital_Physics_Engine
         private void textBox15_TextChanged(object sender, EventArgs e)
         {
             pendingName = textBox15.Text;
+        }
+
+        int defaultUnit = 0;
+        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            defaultUnit = comboBox4.SelectedIndex;
+            if (defaultUnit == 0) label19.Text = "m";
+            else if (defaultUnit == 1) label19.Text = "km";
+            else if (defaultUnit == 2) label19.Text = "Mm";
+            else if (defaultUnit == 3) label19.Text = "AU";
+            else if (defaultUnit == 4) label19.Text = "LY";
+        }
+
+        private void button26_Click(object sender, EventArgs e)
+        {
+            groupBox11.Visible = false;
+            groupBox6.Visible = true;
+        }
+
+        private void button25_Click(object sender, EventArgs e)
+        {
+            groupBox11.Visible = false;
+            groupBox5.Visible = true;
         }
     }
     public class SnapNumericUpDown : NumericUpDown
