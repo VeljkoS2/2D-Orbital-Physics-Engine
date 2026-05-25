@@ -22,10 +22,9 @@ namespace _2D_Orbital_Physics_Engine
         {
             InitializeComponent();
             MouseWheel += OnMouseWheel;
-            this.trackBar1.MouseWheel += (sender, e) => ((HandledMouseEventArgs)e).Handled = true;
+            trackBar1.MouseWheel += (sender, e) => ((HandledMouseEventArgs)e).Handled = true;
         }
 
-        double G = SharedData.G;
         Graphics g;
         double ZoomFactor = 1.3;
         double dt = 0;
@@ -78,11 +77,18 @@ namespace _2D_Orbital_Physics_Engine
             textBox4.Text = "e = " + (!focus.E).ToString("N2");
 
             if (focus.DominantBody != null && !(focus.DominantBody.Position - focus.Position) < focus.DominantBody.Radius * 100)
-                textBox5.Text = "Ap: " + SharedData.SizeScale((focus.EScal < 1.0) ? focus.ApoapsisHeight : 0) + " ( " + SharedData.SizeScale((focus.EScal < 1.0) ? focus.ApoapsisHeight - focus.DominantBody.Radius : 0) + " ), Pe: " + SharedData.SizeScale(focus.PeriapsisHeight) + " ( " + SharedData.SizeScale(focus.PeriapsisHeight - focus.DominantBody.Radius) + " )";
+                textBox5.Text = "Ap: " + SharedData.SizeScale((focus.EScal < 1.0) ? focus.ApoapsisHeight : 0) + " ( " + SharedData.SizeScale((focus.EScal < 1.0) ? focus.ApoapsisHeight - focus.DominantBody.Radius : 0) + " )";
             else if (focus.DominantBody != null)
-                textBox5.Text = "Ap: " + SharedData.SizeScale((focus.EScal < 1.0) ? focus.ApoapsisHeight : 0) + ", Pe: " + SharedData.SizeScale(focus.PeriapsisHeight);
+                textBox5.Text = "Ap: " + SharedData.SizeScale((focus.EScal < 1.0) ? focus.ApoapsisHeight : 0);
             else
-                textBox5.Text = "Ap: " + SharedData.SizeScale(0) + ", Pe: " + SharedData.SizeScale(0);
+                textBox5.Text = "Ap: " + SharedData.SizeScale(0);
+
+            if (focus.DominantBody != null && !(focus.DominantBody.Position - focus.Position) < focus.DominantBody.Radius * 100)
+                textBox14.Text = "Pe: " + SharedData.SizeScale(focus.PeriapsisHeight) + " ( " + SharedData.SizeScale(focus.PeriapsisHeight - focus.DominantBody.Radius) + " )";
+            else if (focus.DominantBody != null)
+                textBox14.Text = "Pe: " + SharedData.SizeScale(focus.PeriapsisHeight);
+            else
+                textBox14.Text = "Pe: " + SharedData.SizeScale(0);
 
             textBox9.Text = "T( Pe ): " + SharedData.TimeScale(focus.TimeToPeriapsis);
             textBox10.Text = "T( Ap ): " + SharedData.TimeScale(focus.TimeToApoapsis);
@@ -96,7 +102,7 @@ namespace _2D_Orbital_Physics_Engine
 
         double CalcOrbitalVelocity(double distance, double mass)
         {
-            return Math.Sqrt(G * (mass / distance));
+            return Math.Sqrt(SharedData.G * (mass / distance));
         }
 
         void PutInFocus(Celestial_Body focusBody)
@@ -220,7 +226,7 @@ namespace _2D_Orbital_Physics_Engine
 
         double CalcGForce(double mass1, double mass2, double distSq)
         {
-            return (G * mass1 * mass2) / distSq;
+            return (SharedData.G * mass1 * mass2) / distSq;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -236,6 +242,8 @@ namespace _2D_Orbital_Physics_Engine
             double w0 = -cbrt2 * w1;
             yoshidaC = [w1 / 2.0, (w0 + w1) / 2.0, (w0 + w1) / 2.0, w1 / 2.0];
             yoshidaD = [w1, w0, w1];
+
+            groupBox1.Location = new Point(30, SharedData.SH - 40 - groupBox1.Height);
 
             groupBox2.Location = new Point(SharedData.SW / 2 - groupBox2.Size.Width / 2, SharedData.SH / 2 - groupBox2.Size.Height / 2);
 
@@ -542,7 +550,6 @@ namespace _2D_Orbital_Physics_Engine
                             if (SharedData.bodies[j].IsAncestorOf(SharedData.bodies[i].DominantBody)) continue;
                             if (!SharedData.bodies[i].CanPossiblyIntersect(SharedData.bodies[j], SOI(SharedData.bodies[j], SharedData.bodies[j].DominantBody))) continue;
                             SharedData.bodies[i].GetIntersectionPosition(SharedData.bodies[j], SOI(SharedData.bodies[j], SharedData.bodies[j].DominantBody));
-                            //SharedData.intersectionsPredicted++;
                         }
                     }
                 }
@@ -551,8 +558,6 @@ namespace _2D_Orbital_Physics_Engine
                     if (body.HasIntersection && body.TimeToIntersection < 3600 * 24 * 30)
                         nextIntersectionUpdate = SharedData.totalElapsedTime;
                 }
-                //label4.Text = SharedData.intersectionsPredicted.ToString();
-                //SharedData.intersectionsPredicted = 0;
             }
         }
 
@@ -638,12 +643,12 @@ namespace _2D_Orbital_Physics_Engine
 
         void DrawScaleLine(Graphics g)
         {
-            g.DrawLine(pen, 30, SharedData.SH - 50, 330, SharedData.SH - 50);
-            g.DrawLine(pen, 30, SharedData.SH - 60, 30, SharedData.SH - 40);
-            g.DrawLine(pen, 330, SharedData.SH - 60, 330, SharedData.SH - 40);
+            g.DrawLine(pen, SharedData.SW - 30, SharedData.SH - 50, SharedData.SW - 330, SharedData.SH - 50);
+            g.DrawLine(pen, SharedData.SW - 30, SharedData.SH - 60, SharedData.SW - 30, SharedData.SH - 40);
+            g.DrawLine(pen, SharedData.SW - 330, SharedData.SH - 60, SharedData.SW - 330, SharedData.SH - 40);
             string sizeScale = SharedData.SizeScale();
             Size textWidth = TextRenderer.MeasureText(sizeScale, Control.DefaultFont);
-            g.DrawString(SharedData.SizeScale(), Control.DefaultFont, brush, 330 - textWidth.Width / 2.0f, SharedData.SH - 80);
+            g.DrawString(SharedData.SizeScale(), Control.DefaultFont, brush, SharedData.SW - 330 - textWidth.Width / 2.0f, SharedData.SH - 80);
         }
         string startSpeed = "0";
         void DrawPreviewOrbit(Graphics g)
@@ -884,14 +889,13 @@ namespace _2D_Orbital_Physics_Engine
                     int index = CheckIfClicked(new Vector(e.X, e.Y));
                     if (index >= 0)
                     {
-                        if (button11.Text == "CENTER")
+                        if (SharedData.bodies[index] == focus && focused)
                         {
                             SharedData.Scale = focus.Radius * 2.0f / 300.0;
                         }
-                        else if (button11.Text == "FOCUS")
+                        else
                         {
                             PutInFocus(SharedData.bodies[index]);
-                            button11.Text = "CENTER";
                         }
                         justFocused = true;
                         focused = true;
@@ -1012,7 +1016,7 @@ namespace _2D_Orbital_Physics_Engine
                             body.Initialized = false;
                         label23.Text = "Bodies: " + SharedData.bodies.Count.ToString();
                     }
-                    if (validMass && placeInOrbit)
+                    if (validMass && placeInOrbit && focused)
                     {
                         Vector position = new Vector(focus.Position.X + spawnDistance, focus.Position.Y);
                         Vector distV = position - focus.Position;
@@ -1195,7 +1199,6 @@ namespace _2D_Orbital_Physics_Engine
             foreach (var body in SharedData.bodies)
                 body.Initialized = false;
             dt = (timer1.Interval / 1000.0) * timeScale;
-            //nextIdT = Math.Clamp(timeScale * 0.001, 0.001, 300);
         }
         void TimeScaleLabel()
         {
@@ -1267,6 +1270,8 @@ namespace _2D_Orbital_Physics_Engine
             focus = null;
             focused = false;
             nextIntersectionUpdate = 0;
+            placeInOrbit = false;
+            checkBox1.Checked = false;
             SharedData.totalElapsedTime = 0;
             SharedData.Scale = SharedData.AU / 300;
             Presets.mainBelt.Clear();
@@ -1743,11 +1748,12 @@ namespace _2D_Orbital_Physics_Engine
         }
         private void button11_Click(object sender, EventArgs e)
         {
-            if (button11.Text == "CENTER")
+            if (SharedData.bodies[actionInd] == focus && focused)
             {
                 SharedData.Scale = focus.Radius * 2.0f / 300.0;
+                button11.Text = "CENTER";
             }
-            else if(button11.Text == "FOCUS")
+            else
             {
                 PutInFocus(SharedData.bodies[actionInd]);
                 button11.Text = "CENTER";

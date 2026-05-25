@@ -33,6 +33,7 @@
             timer1 = new System.Windows.Forms.Timer(components);
             trackBar1 = new TrackBar();
             groupBox1 = new GroupBox();
+            textBox14 = new TextBox();
             textBox11 = new TextBox();
             textBox9 = new TextBox();
             textBox10 = new TextBox();
@@ -168,6 +169,7 @@
             // groupBox1
             // 
             groupBox1.BackColor = Color.DimGray;
+            groupBox1.Controls.Add(textBox14);
             groupBox1.Controls.Add(textBox11);
             groupBox1.Controls.Add(textBox9);
             groupBox1.Controls.Add(textBox10);
@@ -184,10 +186,21 @@
             groupBox1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             groupBox1.Location = new Point(321, 9);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(558, 184);
+            groupBox1.Size = new Size(487, 214);
             groupBox1.TabIndex = 7;
             groupBox1.TabStop = false;
             groupBox1.Text = "INFORMATION";
+            // 
+            // textBox14
+            // 
+            textBox14.BackColor = Color.DimGray;
+            textBox14.BorderStyle = BorderStyle.None;
+            textBox14.Location = new Point(228, 128);
+            textBox14.Name = "textBox14";
+            textBox14.ReadOnly = true;
+            textBox14.Size = new Size(253, 16);
+            textBox14.TabIndex = 61;
+            textBox14.Text = "test";
             // 
             // textBox11
             // 
@@ -196,7 +209,7 @@
             textBox11.Location = new Point(8, 157);
             textBox11.Name = "textBox11";
             textBox11.ReadOnly = true;
-            textBox11.Size = new Size(203, 16);
+            textBox11.Size = new Size(133, 16);
             textBox11.TabIndex = 59;
             textBox11.Text = "test";
             // 
@@ -204,10 +217,10 @@
             // 
             textBox9.BackColor = Color.DimGray;
             textBox9.BorderStyle = BorderStyle.None;
-            textBox9.Location = new Point(228, 128);
+            textBox9.Location = new Point(228, 157);
             textBox9.Name = "textBox9";
             textBox9.ReadOnly = true;
-            textBox9.Size = new Size(323, 16);
+            textBox9.Size = new Size(253, 16);
             textBox9.TabIndex = 58;
             textBox9.Text = "test";
             // 
@@ -215,10 +228,10 @@
             // 
             textBox10.BackColor = Color.DimGray;
             textBox10.BorderStyle = BorderStyle.None;
-            textBox10.Location = new Point(228, 157);
+            textBox10.Location = new Point(228, 186);
             textBox10.Name = "textBox10";
             textBox10.ReadOnly = true;
-            textBox10.Size = new Size(323, 16);
+            textBox10.Size = new Size(253, 16);
             textBox10.TabIndex = 57;
             textBox10.Text = "test";
             // 
@@ -252,7 +265,7 @@
             textBox4.Location = new Point(228, 73);
             textBox4.Name = "textBox4";
             textBox4.ReadOnly = true;
-            textBox4.Size = new Size(323, 16);
+            textBox4.Size = new Size(253, 16);
             textBox4.TabIndex = 54;
             textBox4.Text = "test";
             // 
@@ -270,10 +283,10 @@
             // 
             textBox5.BackColor = Color.DimGray;
             textBox5.BorderStyle = BorderStyle.None;
-            textBox5.Location = new Point(228, 102);
+            textBox5.Location = new Point(228, 100);
             textBox5.Name = "textBox5";
             textBox5.ReadOnly = true;
-            textBox5.Size = new Size(323, 16);
+            textBox5.Size = new Size(253, 16);
             textBox5.TabIndex = 53;
             textBox5.Text = "test";
             // 
@@ -284,7 +297,7 @@
             textBox6.Location = new Point(228, 45);
             textBox6.Name = "textBox6";
             textBox6.ReadOnly = true;
-            textBox6.Size = new Size(323, 16);
+            textBox6.Size = new Size(253, 16);
             textBox6.TabIndex = 52;
             textBox6.Text = "test";
             // 
@@ -305,7 +318,7 @@
             textBox3.Location = new Point(8, 102);
             textBox3.Name = "textBox3";
             textBox3.ReadOnly = true;
-            textBox3.Size = new Size(203, 16);
+            textBox3.Size = new Size(133, 16);
             textBox3.TabIndex = 51;
             textBox3.Text = "test";
             // 
@@ -316,7 +329,7 @@
             textBox1.Location = new Point(8, 73);
             textBox1.Name = "textBox1";
             textBox1.ReadOnly = true;
-            textBox1.Size = new Size(203, 16);
+            textBox1.Size = new Size(133, 16);
             textBox1.TabIndex = 49;
             textBox1.Text = "test";
             // 
@@ -327,7 +340,7 @@
             textBox2.Location = new Point(8, 128);
             textBox2.Name = "textBox2";
             textBox2.ReadOnly = true;
-            textBox2.Size = new Size(203, 16);
+            textBox2.Size = new Size(133, 16);
             textBox2.TabIndex = 50;
             textBox2.Text = "test";
             // 
@@ -1461,9 +1474,10 @@
             Controls.Add(groupBox1);
             Controls.Add(trackBar1);
             DoubleBuffered = true;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             KeyPreview = true;
             Name = "Form1";
-            Text = "Form1";
+            Text = "2D Orbital Physics Engine";
             WindowState = FormWindowState.Maximized;
             Load += Form1_Load;
             Paint += Form1_Paint;
@@ -1601,5 +1615,6 @@
         private Label label7;
         private Button button23;
         private ComboBox comboBox3;
+        private TextBox textBox14;
     }
 }
