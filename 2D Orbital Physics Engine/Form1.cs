@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging.Effects;
 using System.IO.Pipes;
 using System.Numerics;
 using System.Runtime.CompilerServices;
@@ -22,7 +23,9 @@ namespace _2D_Orbital_Physics_Engine
         {
             InitializeComponent();
             MouseWheel += OnMouseWheel;
+
             trackBar1.MouseWheel += (sender, e) => ((HandledMouseEventArgs)e).Handled = true;
+
         }
 
         Graphics g;
@@ -36,6 +39,12 @@ namespace _2D_Orbital_Physics_Engine
         bool focused = false;
         int actionInd = -1;
 
+        void RemoveBody(Celestial_Body body)
+        {
+            body.Dispose();
+            SharedData.bodies.Remove(body);
+            label23.Text = "Bodies: " + SharedData.bodies.Count.ToString();
+        }
         void ControllingThrottle()
         {
             if (SmallScale)
@@ -189,16 +198,13 @@ namespace _2D_Orbital_Physics_Engine
                                 PutInFocus(SharedData.bodies[i]);
                                 focused = true;
                             }
-                            SharedData.bodies[j].TrailPath.Dispose();
-                            SharedData.bodies[j].HyperbolaPath.Dispose();
                             SharedData.bodies[j].HasIntersection = false;
                             SharedData.bodies[i].HasIntersection = false;
                             if (SharedData.bodies[j] is Spaceship s)
                             {
                                 customRadioButton5.Checked = true;
                             }
-                            SharedData.bodies.Remove(SharedData.bodies[j]);
-                            label23.Text = "Bodies: " + SharedData.bodies.Count.ToString();
+                            RemoveBody(SharedData.bodies[j]);
                             i--;
                             break;
                         }
@@ -215,16 +221,13 @@ namespace _2D_Orbital_Physics_Engine
                                 PutInFocus(SharedData.bodies[j]);
                                 focused = true;
                             }
-                            SharedData.bodies[i].TrailPath.Dispose();
-                            SharedData.bodies[i].HyperbolaPath.Dispose();
                             SharedData.bodies[j].HasIntersection = false;
                             SharedData.bodies[i].HasIntersection = false;
                             if (SharedData.bodies[i] is Spaceship s)
                             {
                                 customRadioButton5.Checked = true;
                             }
-                            SharedData.bodies.Remove(SharedData.bodies[i]);
-                            label23.Text = "Bodies: " + SharedData.bodies.Count.ToString();
+                            RemoveBody(SharedData.bodies[i]);
                             i--;
                             break;
                         }
@@ -319,7 +322,8 @@ namespace _2D_Orbital_Physics_Engine
 
         private void button3_Click(object sender, EventArgs e)
         {
-            SharedData.bodies = new List<Celestial_Body>();
+            foreach (Celestial_Body b in SharedData.bodies) b.Dispose();
+            SharedData.bodies.Clear();
             SharedData.Offset = new Vector();
             focus = null;
             focused = false;
@@ -465,9 +469,8 @@ namespace _2D_Orbital_Physics_Engine
                 if (dynamicFactor < precisionFactor) dynamicFactor = precisionFactor;
             }
 
-            // scale substep thresholds with precisionFactor
-            double lowSubsteps = precisionFactor * 0.1;   // e.g. 5 at pf=50, 1 at pf=10
-            double highSubsteps = precisionFactor * 20.0;  // e.g. 1000 at pf=50, 200 at pf=10
+            double lowSubsteps = precisionFactor * 0.1;
+            double highSubsteps = precisionFactor * 20.0;
 
             if (substepCount < lowSubsteps && dynamicFactor > precisionFactor)
             {
@@ -497,7 +500,7 @@ namespace _2D_Orbital_Physics_Engine
         {
             for (int i = 0; i < SharedData.bodies.Count; i++)
             {
-                SharedData.bodies[i].Trail[SharedData.bodies[i].TrailHead] = new Vector(SharedData.bodies[i].Position);
+                SharedData.bodies[i].Trail[SharedData.bodies[i].TrailHead] = SharedData.bodies[i].Position;
                 SharedData.bodies[i].TrailHead = (SharedData.bodies[i].TrailHead + 1) % 200;
                 if (SharedData.bodies[i].TrailCount < 200) SharedData.bodies[i].TrailCount++;
                 SharedData.bodies[i].TrailDirty = true;
@@ -672,9 +675,81 @@ namespace _2D_Orbital_Physics_Engine
             EAT();
             Invalidate();
         }
+
+        bool IsOnScreen(float x, float y)
+        {
+            if (x < 0) return false;
+            if (x > SharedData.SW) return false;
+            if (y < 0) return false;
+            if (y > SharedData.SH) return false;
+            return true;
+
+        }
         protected override void OnPaintBackground(PaintEventArgs e) { }
         Celestial_Body preview;
         SolidBrush SOIBrush = new SolidBrush(Color.FromArgb(25, Color.White));
+
+
+        Pen[] gridPens =
+            [new Pen(Color.FromArgb(30, Color.White), 2f),
+            new Pen(Color.FromArgb(20, Color.White), 1.5f),
+            new Pen(Color.FromArgb(10, Color.White), 1.5f),
+            new Pen(Color.FromArgb(5, Color.White), 1.5f),
+            new Pen(Color.FromArgb(2, Color.White), 1.5f)];
+
+        SolidBrush gridNumBrush = new SolidBrush(Color.FromArgb(30, Color.White));
+
+        void DrawGrid(Graphics g)
+        {
+            double cx = SharedData.PutInScreenPosScaleXDouble(0); 
+            double cy = SharedData.PutInScreenPosScaleYDouble(0);
+
+            g.DrawLine(gridPens[0], 0, SharedData.ClampFloat((float)cy), SharedData.SW, SharedData.ClampFloat((float)cy));
+            g.DrawLine(gridPens[0], SharedData.ClampFloat((float)cx), 0, SharedData.ClampFloat((float)cx), SharedData.SH);
+
+            double worldSpacing = SharedData.AU;
+            while (worldSpacing / SharedData.Scale > 300) worldSpacing /= 10.0;
+            while (worldSpacing / SharedData.Scale < 100) worldSpacing *= 10.0;
+
+            double spacing = worldSpacing / SharedData.Scale;
+
+            DrawGrid(g, cx, cy, spacing, 1);
+        }
+
+        void DrawGrid(Graphics g, double cx, double cy, double spacing, int depth)
+        {
+            if (depth > gridPens.Length - 1) return;
+            if (spacing < 30) return;
+
+            Pen pen = gridPens[depth];
+
+            double offX = cx % spacing;
+            double offY = cy % spacing;
+            if (offX < 0) offX += spacing;
+            if (offY < 0) offY += spacing;
+
+            for (double x = offX; x < SharedData.SW; x += spacing)
+            {
+                g.DrawLine(pen, (float)x, 0, (float)x, SharedData.SH);
+                if (depth == 1)
+                {
+                    double worldX = SharedData.PutInWorldPosScaleX(x);
+                    g.DrawString(SharedData.SizeScale(worldX), DefaultFont, gridNumBrush, (float)x + 2, (float)cy + 2);
+                }
+            }
+
+            for (double y = offY; y < SharedData.SH; y += spacing)
+            {
+                g.DrawLine(pen, 0, (float)y, SharedData.SW, (float)y);
+                if (depth == 1)
+                {
+                    double worldY = SharedData.PutInWorldPosScaleY(y);
+                    g.DrawString(SharedData.SizeScale(worldY), DefaultFont, gridNumBrush, (float)cx + 2, (float)y + 2);
+                }
+            }
+
+            DrawGrid(g, cx, cy, spacing / 2.0, depth + 1);
+        }
 
         void DrawScaleLine(Graphics g)
         {
@@ -735,7 +810,7 @@ namespace _2D_Orbital_Physics_Engine
         }
         void DrawMouseDistanceFromFocus(Graphics g)
         {
-            if (focus != null)
+            if (focused && focus != null)
             {
                 Vector distance = new Vector(currLocation.X, currLocation.Y) - new Vector(SharedData.SW / 2.0, SharedData.SH / 2.0);
                 double dist = !distance;
@@ -844,7 +919,6 @@ namespace _2D_Orbital_Physics_Engine
 
             }
         }
-
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.Clear(Color.Black);
@@ -852,6 +926,10 @@ namespace _2D_Orbital_Physics_Engine
             g = e.Graphics;
 
             g.SetClip(ClientRectangle);
+
+            if (SharedData.drawGrid)
+                DrawGrid(g);
+
             Presets.DrawBelt(g, Presets.mainBelt, brush, SharedData.Offset, SharedData.SW, SharedData.SH);
             Presets.DrawBelt(g, Presets.kuiperBelt, brush, SharedData.Offset, SharedData.SW, SharedData.SH);
 
@@ -864,12 +942,14 @@ namespace _2D_Orbital_Physics_Engine
                 float radius = SharedData.PutInScreenScaleClamp(SharedData.CalculateRadius(bodyMass));
                 g.FillEllipse(SOIBrush, currLocation.X - radius, currLocation.Y - radius, radius * 2.0f, radius * 2.0f);
             }
-
             DrawScaleLine(g);
             DrawMouseDistanceFromFocus(g);
             DrawThrottleBar(g);
-            DrawIntersections(g);
-            DrawPostIntersectionOrbit(g);
+            if (SharedData.PredictIntersections)
+            {
+                DrawIntersections(g);
+                DrawPostIntersectionOrbit(g);
+            }
             g.ResetClip();
         }
 
@@ -1305,7 +1385,8 @@ namespace _2D_Orbital_Physics_Engine
 
         private void button1_Click(object sender, EventArgs e)
         {
-            SharedData.bodies = new List<Celestial_Body>();
+            foreach (Celestial_Body b in SharedData.bodies) b.Dispose();
+            SharedData.bodies.Clear();
             SharedData.Offset = new Vector();
             focus = null;
             focused = false;
@@ -1802,8 +1883,6 @@ namespace _2D_Orbital_Physics_Engine
         }
         private void button12_Click(object sender, EventArgs e)
         {
-            SharedData.bodies[actionInd].TrailPath.Dispose();
-            SharedData.bodies[actionInd].HyperbolaPath.Dispose();
             if (SharedData.bodies[actionInd] is Spaceship s)
             {
                 customRadioButton5.Checked = true;
@@ -1815,8 +1894,7 @@ namespace _2D_Orbital_Physics_Engine
                 placeInOrbit = false;
                 checkBox1.Checked = false;
             }
-            SharedData.bodies.Remove(SharedData.bodies[actionInd]);
-            label23.Text = "Bodies: " + SharedData.bodies.Count.ToString();
+            RemoveBody(SharedData.bodies[actionInd]);
             groupBox8.Visible = false;
             button11.Text = "FOCUS";
             return;
@@ -2062,12 +2140,12 @@ namespace _2D_Orbital_Physics_Engine
             defaultUnit = comboBox4.SelectedIndex;
             if (placeInOrbit && double.TryParse(textBox12.Text, out double result) && result > 0)
             {
-                if(defaultUnit < 3)
+                if (defaultUnit < 3)
                     spawnDistance = result * Math.Pow(1000, defaultUnit) + focus.Radius;
                 else
                 {
-                    if(defaultUnit == 3) spawnDistance = result * SharedData.AU + focus.Radius;
-                    else if(defaultUnit == 4) spawnDistance = result * SharedData.LightYear + focus.Radius; 
+                    if (defaultUnit == 3) spawnDistance = result * SharedData.AU + focus.Radius;
+                    else if (defaultUnit == 4) spawnDistance = result * SharedData.LightYear + focus.Radius;
                 }
             }
         }
@@ -2082,6 +2160,17 @@ namespace _2D_Orbital_Physics_Engine
         {
             groupBox11.Visible = false;
             groupBox5.Visible = true;
+        }
+
+        private void label17_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox2.Checked) SharedData.drawGrid = true;
+            else SharedData.drawGrid = false;
         }
     }
     public class SnapNumericUpDown : NumericUpDown
@@ -2140,4 +2229,5 @@ namespace _2D_Orbital_Physics_Engine
             TextRenderer.DrawText(g, Text, Font, textRect, ForeColor, TextFormatFlags.VerticalCenter | TextFormatFlags.Left);
         }
     }
+
 }

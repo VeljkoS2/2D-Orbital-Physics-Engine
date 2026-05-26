@@ -15,7 +15,8 @@ namespace _2D_Orbital_Physics_Engine
     public static class SharedData
     {
         public static bool UseAnalytic { get; set; } = false;
-        public static Vector FocusPosition { get; set; } = new Vector();
+        public static Vector FocusPosition = new Vector();
+        public static bool drawGrid { get; set; } = true;
         public static double c { get; } = 299792458;
         public static double G { get; } = 6.6743e-11;
         public static double LightYear { get; } = 9460730472580800;
@@ -26,7 +27,7 @@ namespace _2D_Orbital_Physics_Engine
         public static bool DrawOrbits { get; set; } = true;
         public static double OrbitDrawSize { get; set; } = 100;
         public static double totalElapsedTime { get; set; } = 0;
-        public static Vector Offset { get; set; } = new Vector();
+        public static Vector Offset = new Vector();
         public static int SW { get; set; } = 0;
         public static int SH { get; set; } = 0;
         public static Celestial_Body ghost { get; set; } = new Planet();
@@ -311,6 +312,16 @@ namespace _2D_Orbital_Physics_Engine
         {
             double relative = val - FocusPosition.Y;
             return (float)(relative / Scale + SH / 2.0 + Offset.Y);
+        }
+        public static double PutInScreenPosScaleXDouble(double val)
+        {
+            double relative = val - FocusPosition.X;
+            return relative / Scale + SW / 2.0 + Offset.X;
+        }
+        public static double PutInScreenPosScaleYDouble(double val)
+        {
+            double relative = val - FocusPosition.Y;
+            return relative / Scale + SH / 2.0 + Offset.Y;
         }
         public static double PutInWorldPosScaleY(double val)
         {

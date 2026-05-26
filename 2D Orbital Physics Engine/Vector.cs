@@ -7,26 +7,15 @@ using System.Threading.Tasks;
 
 namespace _2D_Orbital_Physics_Engine
 {
-    public class Vector
+    public struct Vector
     {
-        public double X {get; set;}
-        public double Y {get; set;}
+        public double X;
+        public double Y;
 
-        public Vector()
-        {
-            X = 0;
-            Y = 0;
-        }
         public Vector(double x, double y)
         {
             X = x;
             Y = y;
-        }
-
-        public Vector(Vector a)
-        {
-            X = a.X;
-            Y = a.Y;
         }
 
         public double SquaredMagnitude()

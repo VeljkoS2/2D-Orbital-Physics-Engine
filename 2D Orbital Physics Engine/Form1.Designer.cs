@@ -48,6 +48,7 @@
             textBox1 = new TextBox();
             textBox2 = new TextBox();
             groupBox2 = new GroupBox();
+            checkBox2 = new CheckBox();
             button15 = new Button();
             button2 = new Button();
             snapNumericUpDown2 = new SnapNumericUpDown();
@@ -362,6 +363,7 @@
             // groupBox2
             // 
             groupBox2.BackColor = Color.DimGray;
+            groupBox2.Controls.Add(checkBox2);
             groupBox2.Controls.Add(button15);
             groupBox2.Controls.Add(button2);
             groupBox2.Controls.Add(snapNumericUpDown2);
@@ -385,6 +387,23 @@
             groupBox2.Text = "SETTINGS";
             groupBox2.Visible = false;
             // 
+            // checkBox2
+            // 
+            checkBox2.AutoSize = true;
+            checkBox2.BackColor = Color.Transparent;
+            checkBox2.Checked = true;
+            checkBox2.CheckState = CheckState.Checked;
+            checkBox2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            checkBox2.ForeColor = Color.Black;
+            checkBox2.ImageAlign = ContentAlignment.MiddleRight;
+            checkBox2.Location = new Point(6, 92);
+            checkBox2.Name = "checkBox2";
+            checkBox2.Size = new Size(50, 19);
+            checkBox2.TabIndex = 60;
+            checkBox2.Text = "Grid";
+            checkBox2.UseVisualStyleBackColor = false;
+            checkBox2.CheckedChanged += checkBox2_CheckedChanged;
+            // 
             // button15
             // 
             button15.BackColor = Color.Tomato;
@@ -404,7 +423,7 @@
             button2.BackColor = Color.LightGray;
             button2.FlatStyle = FlatStyle.Popup;
             button2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            button2.Location = new Point(87, 187);
+            button2.Location = new Point(237, 187);
             button2.Name = "button2";
             button2.Size = new Size(123, 23);
             button2.TabIndex = 31;
@@ -416,7 +435,7 @@
             // 
             snapNumericUpDown2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             snapNumericUpDown2.Increment = new decimal(new int[] { 10, 0, 0, 0 });
-            snapNumericUpDown2.Location = new Point(6, 120);
+            snapNumericUpDown2.Location = new Point(6, 143);
             snapNumericUpDown2.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
             snapNumericUpDown2.Name = "snapNumericUpDown2";
             snapNumericUpDown2.Size = new Size(59, 23);
@@ -428,7 +447,7 @@
             // 
             label25.AutoSize = true;
             label25.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            label25.Location = new Point(71, 159);
+            label25.Location = new Point(71, 182);
             label25.Name = "label25";
             label25.Size = new Size(100, 15);
             label25.TabIndex = 29;
@@ -437,7 +456,7 @@
             // snapNumericUpDown1
             // 
             snapNumericUpDown1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            snapNumericUpDown1.Location = new Point(6, 151);
+            snapNumericUpDown1.Location = new Point(6, 174);
             snapNumericUpDown1.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
             snapNumericUpDown1.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
             snapNumericUpDown1.Name = "snapNumericUpDown1";
@@ -518,7 +537,7 @@
             checkBox4.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             checkBox4.ForeColor = Color.Black;
             checkBox4.ImageAlign = ContentAlignment.MiddleRight;
-            checkBox4.Location = new Point(6, 92);
+            checkBox4.Location = new Point(6, 118);
             checkBox4.Name = "checkBox4";
             checkBox4.Size = new Size(149, 19);
             checkBox4.TabIndex = 20;
@@ -530,11 +549,12 @@
             // 
             label17.AutoSize = true;
             label17.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            label17.Location = new Point(71, 128);
+            label17.Location = new Point(71, 151);
             label17.Name = "label17";
             label17.Size = new Size(95, 15);
             label17.TabIndex = 22;
             label17.Text = "Precision Factor";
+            label17.Click += label17_Click;
             // 
             // label24
             // 
@@ -552,7 +572,7 @@
             button1.FlatStyle = FlatStyle.Popup;
             button1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             button1.ForeColor = Color.Black;
-            button1.Location = new Point(6, 187);
+            button1.Location = new Point(366, 187);
             button1.Name = "button1";
             button1.Size = new Size(75, 23);
             button1.TabIndex = 8;
@@ -1017,7 +1037,7 @@
             label35.ForeColor = Color.Black;
             label35.Location = new Point(15, 37);
             label35.Name = "label35";
-            label35.Size = new Size(494, 135);
+            label35.Size = new Size(494, 150);
             label35.TabIndex = 37;
             label35.Text = resources.GetString("label35.Text");
             // 
@@ -1829,5 +1849,6 @@
         private Label label48;
         private Label label47;
         private Button button26;
+        private CheckBox checkBox2;
     }
 }

@@ -124,6 +124,7 @@
     <value>GENERAL: 
 Simulate Orbits - Enables/disables visualization of all orbits.
 Predict Intersections - Enables/disables predictions of intersections.
+Grid- Enables/disables the drawing of the grid.
 Small-Scale Timewarp - Changes to a timewarp ranging from 1x to 5 000x.
 Precision Factor - Sets the minimum precision factor, higher number means less precise.
 Orbit Draw Limit - Higher the number the more orbits will be drawn.

@@ -23,11 +23,11 @@ using System.Xml.Linq;
 
 namespace _2D_Orbital_Physics_Engine
 {
-    abstract public class Celestial_Body
+    abstract public class Celestial_Body : IDisposable
     {
         public string Name { get; set; } = "";
         public Size TextWidth { get; set; }
-        public Vector Position { get; set; } = new Vector();
+        public Vector Position = new Vector();
         public bool Initialized { get; set; } = false;
         public double Mass { get; set; }
         public bool IsSaturn { get; set; } = false;
@@ -35,14 +35,14 @@ namespace _2D_Orbital_Physics_Engine
         public bool IsUranus { get; set; } = false;
         public bool IsNeptune { get; set; } = false;
         public double Radius { get; set; } = 0;
-        public Vector Velocity { get; set; } = new Vector();
-        public Vector Acceleration { get; set; } = new Vector();
+        public Vector Velocity  = new Vector();
+        public Vector Acceleration = new Vector();
         public Color Color { get; set; } = Color.Red;
         public Random Rnd { get; set; } = new Random();
-        public Vector[] Trail { get; set; } = new Vector[200];
+        public Vector[] Trail = new Vector[200];
         public int TrailHead { get; set; } = 0;
         public int TrailCount { get; set; } = 0;
-        public PointF[] TrailPoints { get; set; } = new PointF[200];
+        public PointF[] TrailPoints = new PointF[200];
         public Pen Pen { get; set; } = new Pen(Color.Red ,2);
         public Pen TrailPen { get; set; } = new Pen(Color.Red ,2);
         public SolidBrush Brush { get; set; } = new SolidBrush(Color.Red);
@@ -59,26 +59,26 @@ namespace _2D_Orbital_Physics_Engine
         public double A { get; set; } = 0;
         public double B { get; set; } = 0;
         public double C { get; set; } = 0;
-        public Vector E { get; set; } = new Vector();
+        public Vector E  = new Vector();
         public double EScal { get; set; } = 0;
         public double Angle { get; set; } = 0;
         public Pen OrbitPen { get; set; }
         public bool OrbitalDirty { get; set; } = true;
-        public Vector Focus1 { get; set; } = new Vector();
-        public Vector Focus2 { get; set; } = new Vector();
-        public Vector Periapsis { get; set; } = new Vector();
+        public Vector Focus1 = new Vector();
+        public Vector Focus2 = new Vector();
+        public Vector Periapsis = new Vector();
         public double PeriapsisHeight { get; set; } = 0;
         public double TimeToPeriapsis { get; set; } = 0;
         public double ApoapsisHeight { get; set; } = 0;
         public double TimeToApoapsis { get; set; } = 0;
-        public Vector Apoapsis { get; set; } = new Vector();
-        public Vector OrbitCenter { get; set; } = new Vector();
-        public Vector OrbitCenterScreen { get; set; } = new Vector();
+        public Vector Apoapsis = new Vector();
+        public Vector OrbitCenter  = new Vector();
+        public Vector OrbitCenterScreen = new Vector();
         public double EccentricAnomaly { get; set; } = 0;
         public double HyperbolicAnomaly { get; set; } = 0;
         public double AvgAngSpeed { get; set; } = 0;
         public double OrbitalPeriod { get; set; } = 0;
-        public Vector Intersection { get; set; } = new Vector();
+        public Vector Intersection = new Vector();
         public double CosAngle { get; set; } = 0;
         public double SinAngle { get; set; } = 0;
         public double AngleRad { get; set; } = 0;
@@ -97,6 +97,34 @@ namespace _2D_Orbital_Physics_Engine
         public bool Antiradial { get; set; } = false;
         public bool Free { get; set; } = true;
         public double Thrust { get; set; } = 500000000;
+
+        private bool _disposed = false;
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+            if (disposing)
+            {
+                TrailPath?.Dispose();
+                HyperbolaPath?.Dispose();
+                Pen?.Dispose();
+                TrailPen?.Dispose();
+                OrbitPen?.Dispose();
+                Brush?.Dispose();
+                OrbitalBrush?.Dispose();
+            }
+            _disposed = true;
+        }
+
+        ~Celestial_Body()
+        {
+            Dispose(false);
+        }
 
         public Celestial_Body(double x, double y, double mass, Vector StartingVelocity, string name = "")
         {
@@ -298,9 +326,7 @@ namespace _2D_Orbital_Physics_Engine
                         double H = Hnow + k * (6.0 - Hnow) / (sampleNum - 1);
                         double xFut = absA * (EScal - Math.Cosh(H));
                         double yFut = absA * Math.Sqrt(EScal * EScal - 1) * Math.Sinh(H);
-                        Vector futPos = new Vector(
-                            DominantBody.Position.X + eDir.X * xFut + ePerp.X * yFut,
-                            DominantBody.Position.Y + eDir.Y * xFut + ePerp.Y * yFut);
+                        Vector futPos = new Vector(DominantBody.Position.X + eDir.X * xFut + ePerp.X * yFut, DominantBody.Position.Y + eDir.Y * xFut + ePerp.Y * yFut);
                         double dist = !(futPos - target.Position);
                         if (dist < target.ApoapsisHeight + rSOI) return true;
                     }
@@ -665,7 +691,7 @@ namespace _2D_Orbital_Physics_Engine
             Vector relativeDistance = Position - DominantBody.Position;
             double distance = !relativeDistance;
             double GM = SharedData.G * (DominantBody.Mass + Mass);
-            Focus1 = new Vector(DominantBody.Position);
+            Focus1 = DominantBody.Position;
             A = 1 / (2 / distance - (relativeSpeed * relativeSpeed) / GM);
             E = (relativeDistance % ((relativeSpeed * relativeSpeed) - GM / distance) - relativeVelocity % (relativeDistance * relativeVelocity)) % (1 / GM);
             EScal = !E;
@@ -965,6 +991,16 @@ namespace _2D_Orbital_Physics_Engine
             Pen.Color = Color.FromArgb(Color.A / 2, Color.White);
             Brush.Color = Color;
             TrailPen.Color = Color.FromArgb(40, Color);
+        }
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                aDiskO?.Dispose();
+                aDiskY?.Dispose();
+                Whitepen?.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
         public override void CalcRadius()
@@ -1488,4 +1524,5 @@ namespace _2D_Orbital_Physics_Engine
         override public void ThrottleShip() { }
         public override void DecideColor(double Smass) { }
     }
+
 }
