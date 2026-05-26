@@ -562,6 +562,7 @@
             // 
             // comboBox4
             // 
+            comboBox4.BackColor = Color.FromArgb(255, 128, 128);
             comboBox4.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox4.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             comboBox4.FormattingEnabled = true;
@@ -1345,7 +1346,7 @@
             textBox12.MaxLength = 100;
             textBox12.Name = "textBox12";
             textBox12.PlaceholderText = "Enter Height";
-            textBox12.Size = new Size(121, 23);
+            textBox12.Size = new Size(119, 23);
             textBox12.TabIndex = 65;
             // 
             // checkBox1
