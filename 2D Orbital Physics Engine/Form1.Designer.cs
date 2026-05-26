@@ -48,8 +48,6 @@
             textBox1 = new TextBox();
             textBox2 = new TextBox();
             groupBox2 = new GroupBox();
-            label8 = new Label();
-            comboBox4 = new ComboBox();
             button15 = new Button();
             button2 = new Button();
             snapNumericUpDown2 = new SnapNumericUpDown();
@@ -64,6 +62,7 @@
             label17 = new Label();
             label24 = new Label();
             button1 = new Button();
+            comboBox4 = new ComboBox();
             label9 = new Label();
             label10 = new Label();
             label11 = new Label();
@@ -123,7 +122,6 @@
             button12 = new Button();
             button11 = new Button();
             groupBox9 = new GroupBox();
-            label19 = new Label();
             textBox12 = new TextBox();
             checkBox1 = new CheckBox();
             textBox13 = new TextBox();
@@ -364,8 +362,6 @@
             // groupBox2
             // 
             groupBox2.BackColor = Color.DimGray;
-            groupBox2.Controls.Add(label8);
-            groupBox2.Controls.Add(comboBox4);
             groupBox2.Controls.Add(button15);
             groupBox2.Controls.Add(button2);
             groupBox2.Controls.Add(snapNumericUpDown2);
@@ -389,27 +385,6 @@
             groupBox2.Text = "SETTINGS";
             groupBox2.Visible = false;
             // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            label8.Location = new Point(74, 128);
-            label8.Name = "label8";
-            label8.Size = new Size(69, 15);
-            label8.TabIndex = 67;
-            label8.Text = "Input Units";
-            // 
-            // comboBox4
-            // 
-            comboBox4.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox4.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            comboBox4.FormattingEnabled = true;
-            comboBox4.Location = new Point(9, 120);
-            comboBox4.Name = "comboBox4";
-            comboBox4.Size = new Size(59, 23);
-            comboBox4.TabIndex = 66;
-            comboBox4.SelectedIndexChanged += comboBox4_SelectedIndexChanged;
-            // 
             // button15
             // 
             button15.BackColor = Color.Tomato;
@@ -429,7 +404,7 @@
             button2.BackColor = Color.LightGray;
             button2.FlatStyle = FlatStyle.Popup;
             button2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            button2.Location = new Point(237, 187);
+            button2.Location = new Point(87, 187);
             button2.Name = "button2";
             button2.Size = new Size(123, 23);
             button2.TabIndex = 31;
@@ -441,7 +416,7 @@
             // 
             snapNumericUpDown2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             snapNumericUpDown2.Increment = new decimal(new int[] { 10, 0, 0, 0 });
-            snapNumericUpDown2.Location = new Point(9, 152);
+            snapNumericUpDown2.Location = new Point(6, 120);
             snapNumericUpDown2.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
             snapNumericUpDown2.Name = "snapNumericUpDown2";
             snapNumericUpDown2.Size = new Size(59, 23);
@@ -453,7 +428,7 @@
             // 
             label25.AutoSize = true;
             label25.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            label25.Location = new Point(74, 191);
+            label25.Location = new Point(71, 159);
             label25.Name = "label25";
             label25.Size = new Size(100, 15);
             label25.TabIndex = 29;
@@ -462,7 +437,7 @@
             // snapNumericUpDown1
             // 
             snapNumericUpDown1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            snapNumericUpDown1.Location = new Point(9, 183);
+            snapNumericUpDown1.Location = new Point(6, 151);
             snapNumericUpDown1.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
             snapNumericUpDown1.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
             snapNumericUpDown1.Name = "snapNumericUpDown1";
@@ -555,7 +530,7 @@
             // 
             label17.AutoSize = true;
             label17.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            label17.Location = new Point(74, 160);
+            label17.Location = new Point(71, 128);
             label17.Name = "label17";
             label17.Size = new Size(95, 15);
             label17.TabIndex = 22;
@@ -577,13 +552,24 @@
             button1.FlatStyle = FlatStyle.Popup;
             button1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             button1.ForeColor = Color.Black;
-            button1.Location = new Point(366, 187);
+            button1.Location = new Point(6, 187);
             button1.Name = "button1";
             button1.Size = new Size(75, 23);
             button1.TabIndex = 8;
             button1.Text = "RESET";
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
+            // 
+            // comboBox4
+            // 
+            comboBox4.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox4.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            comboBox4.FormattingEnabled = true;
+            comboBox4.Location = new Point(125, 136);
+            comboBox4.Name = "comboBox4";
+            comboBox4.Size = new Size(54, 23);
+            comboBox4.TabIndex = 66;
+            comboBox4.SelectedIndexChanged += comboBox4_SelectedIndexChanged;
             // 
             // label9
             // 
@@ -679,7 +665,7 @@
             comboBox2.FormattingEnabled = true;
             comboBox2.Location = new Point(6, 37);
             comboBox2.Name = "comboBox2";
-            comboBox2.Size = new Size(138, 23);
+            comboBox2.Size = new Size(173, 23);
             comboBox2.TabIndex = 26;
             comboBox2.SelectedIndexChanged += comboBox2_SelectedIndexChanged;
             comboBox2.TextUpdate += comboBox2_TextUpdate;
@@ -1030,7 +1016,7 @@
             label35.ForeColor = Color.Black;
             label35.Location = new Point(15, 37);
             label35.Name = "label35";
-            label35.Size = new Size(494, 150);
+            label35.Size = new Size(494, 135);
             label35.TabIndex = 37;
             label35.Text = resources.GetString("label35.Text");
             // 
@@ -1330,7 +1316,7 @@
             // groupBox9
             // 
             groupBox9.BackColor = Color.DimGray;
-            groupBox9.Controls.Add(label19);
+            groupBox9.Controls.Add(comboBox4);
             groupBox9.Controls.Add(textBox12);
             groupBox9.Controls.Add(checkBox1);
             groupBox9.Controls.Add(textBox13);
@@ -1340,24 +1326,13 @@
             groupBox9.Controls.Add(button20);
             groupBox9.Controls.Add(comboBox2);
             groupBox9.Font = new Font("Segoe UI", 9F, FontStyle.Bold | FontStyle.Underline);
-            groupBox9.Location = new Point(914, 118);
+            groupBox9.Location = new Point(879, 118);
             groupBox9.Name = "groupBox9";
-            groupBox9.Size = new Size(150, 200);
+            groupBox9.Size = new Size(185, 200);
             groupBox9.TabIndex = 60;
             groupBox9.TabStop = false;
             groupBox9.Text = "SPAWN BODY";
             groupBox9.Visible = false;
-            // 
-            // label19
-            // 
-            label19.BackColor = Color.Silver;
-            label19.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            label19.ForeColor = Color.Black;
-            label19.Location = new Point(119, 137);
-            label19.Name = "label19";
-            label19.Size = new Size(18, 21);
-            label19.TabIndex = 66;
-            label19.Text = "m";
             // 
             // textBox12
             // 
@@ -1366,11 +1341,11 @@
             textBox12.Cursor = Cursors.Hand;
             textBox12.Enabled = false;
             textBox12.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            textBox12.Location = new Point(13, 136);
+            textBox12.Location = new Point(6, 136);
             textBox12.MaxLength = 100;
             textBox12.Name = "textBox12";
             textBox12.PlaceholderText = "Enter Height";
-            textBox12.Size = new Size(106, 23);
+            textBox12.Size = new Size(121, 23);
             textBox12.TabIndex = 65;
             // 
             // checkBox1
@@ -1393,11 +1368,11 @@
             textBox13.BorderStyle = BorderStyle.FixedSingle;
             textBox13.Cursor = Cursors.Hand;
             textBox13.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            textBox13.Location = new Point(21, 82);
+            textBox13.Location = new Point(20, 82);
             textBox13.MaxLength = 100;
             textBox13.Name = "textBox13";
             textBox13.PlaceholderText = "Enter Name";
-            textBox13.Size = new Size(106, 23);
+            textBox13.Size = new Size(146, 23);
             textBox13.TabIndex = 63;
             textBox13.TextChanged += textBox13_TextChanged;
             // 
@@ -1406,7 +1381,7 @@
             button21.BackColor = Color.LightGray;
             button21.FlatStyle = FlatStyle.Popup;
             button21.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            button21.Location = new Point(34, 171);
+            button21.Location = new Point(52, 171);
             button21.Name = "button21";
             button21.Size = new Size(81, 23);
             button21.TabIndex = 62;
@@ -1432,7 +1407,7 @@
             label6.BackColor = Color.Transparent;
             label6.Font = new Font("Segoe UI", 9F, FontStyle.Bold | FontStyle.Underline);
             label6.ForeColor = Color.Maroon;
-            label6.Location = new Point(32, 63);
+            label6.Location = new Point(53, 62);
             label6.Name = "label6";
             label6.Size = new Size(79, 15);
             label6.TabIndex = 60;
@@ -1445,7 +1420,7 @@
             button20.FlatStyle = FlatStyle.Popup;
             button20.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             button20.ForeColor = Color.White;
-            button20.Location = new Point(129, 0);
+            button20.Location = new Point(164, 0);
             button20.Name = "button20";
             button20.Size = new Size(21, 23);
             button20.TabIndex = 58;
@@ -1463,9 +1438,9 @@
             groupBox10.Controls.Add(button23);
             groupBox10.Controls.Add(comboBox3);
             groupBox10.Font = new Font("Segoe UI", 9F, FontStyle.Bold | FontStyle.Underline);
-            groupBox10.Location = new Point(758, 118);
+            groupBox10.Location = new Point(688, 118);
             groupBox10.Name = "groupBox10";
-            groupBox10.Size = new Size(150, 141);
+            groupBox10.Size = new Size(185, 141);
             groupBox10.TabIndex = 66;
             groupBox10.TabStop = false;
             groupBox10.Text = "SPAWN BODY";
@@ -1477,11 +1452,11 @@
             textBox15.BorderStyle = BorderStyle.FixedSingle;
             textBox15.Cursor = Cursors.Hand;
             textBox15.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            textBox15.Location = new Point(21, 82);
+            textBox15.Location = new Point(20, 82);
             textBox15.MaxLength = 100;
             textBox15.Name = "textBox15";
             textBox15.PlaceholderText = "Enter Name";
-            textBox15.Size = new Size(106, 23);
+            textBox15.Size = new Size(146, 23);
             textBox15.TabIndex = 63;
             textBox15.TextChanged += textBox15_TextChanged;
             // 
@@ -1490,7 +1465,7 @@
             button22.BackColor = Color.LightGray;
             button22.FlatStyle = FlatStyle.Popup;
             button22.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            button22.Location = new Point(34, 111);
+            button22.Location = new Point(52, 111);
             button22.Name = "button22";
             button22.Size = new Size(80, 23);
             button22.TabIndex = 62;
@@ -1516,7 +1491,7 @@
             label7.BackColor = Color.Transparent;
             label7.Font = new Font("Segoe UI", 9F, FontStyle.Bold | FontStyle.Underline);
             label7.ForeColor = Color.Maroon;
-            label7.Location = new Point(32, 63);
+            label7.Location = new Point(53, 62);
             label7.Name = "label7";
             label7.Size = new Size(79, 15);
             label7.TabIndex = 60;
@@ -1529,7 +1504,7 @@
             button23.FlatStyle = FlatStyle.Popup;
             button23.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             button23.ForeColor = Color.White;
-            button23.Location = new Point(129, 0);
+            button23.Location = new Point(164, 0);
             button23.Name = "button23";
             button23.Size = new Size(21, 23);
             button23.TabIndex = 58;
@@ -1543,7 +1518,7 @@
             comboBox3.FormattingEnabled = true;
             comboBox3.Location = new Point(6, 37);
             comboBox3.Name = "comboBox3";
-            comboBox3.Size = new Size(138, 23);
+            comboBox3.Size = new Size(173, 23);
             comboBox3.TabIndex = 26;
             comboBox3.SelectedIndexChanged += comboBox3_SelectedIndexChanged;
             comboBox3.TextUpdate += comboBox3_TextUpdate;
@@ -1839,9 +1814,7 @@
         private Button button23;
         private ComboBox comboBox3;
         private TextBox textBox14;
-        private Label label8;
         private ComboBox comboBox4;
-        private Label label19;
         private GroupBox groupBox11;
         private Button button24;
         private Label label20;

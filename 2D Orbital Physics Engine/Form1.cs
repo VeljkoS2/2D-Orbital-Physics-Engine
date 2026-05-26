@@ -127,7 +127,15 @@ namespace _2D_Orbital_Physics_Engine
                 focused = true;
             }
             if (placeInOrbit && double.TryParse(textBox12.Text, out double result) && result > 0)
-                spawnDistance = result * Math.Pow(1000, defaultUnit) + focus.Radius;
+            {
+                if (defaultUnit < 3)
+                    spawnDistance = result * Math.Pow(1000, defaultUnit) + focus.Radius;
+                else
+                {
+                    if (defaultUnit == 3) spawnDistance = result * SharedData.AU + focus.Radius;
+                    else if (defaultUnit == 4) spawnDistance = result * SharedData.LightYear + focus.Radius;
+                }
+            }
         }
         int CheckIfClicked(Vector MouseClick)
         {
@@ -307,7 +315,6 @@ namespace _2D_Orbital_Physics_Engine
             comboBox4.Items.Add("AU");
             comboBox4.Items.Add("LY");
             comboBox4.SelectedIndex = 0;
-            label19.Text = "m";
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -1919,7 +1926,15 @@ namespace _2D_Orbital_Physics_Engine
             if (currInd == -1) bodyMass = pendingMass;
             validMass = true;
             if (placeInOrbit && double.TryParse(textBox12.Text, out double result) && result > 0)
-                spawnDistance = result * Math.Pow(1000, defaultUnit) + focus.Radius;
+            {
+                if (defaultUnit < 3)
+                    spawnDistance = result * Math.Pow(1000, defaultUnit) + focus.Radius;
+                else
+                {
+                    if (defaultUnit == 3) spawnDistance = result * SharedData.AU + focus.Radius;
+                    else if (defaultUnit == 4) spawnDistance = result * SharedData.LightYear + focus.Radius;
+                }
+            }
         }
 
         bool placeInOrbit = false;
@@ -2045,11 +2060,16 @@ namespace _2D_Orbital_Physics_Engine
         private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
         {
             defaultUnit = comboBox4.SelectedIndex;
-            if (defaultUnit == 0) label19.Text = "m";
-            else if (defaultUnit == 1) label19.Text = "km";
-            else if (defaultUnit == 2) label19.Text = "Mm";
-            else if (defaultUnit == 3) label19.Text = "AU";
-            else if (defaultUnit == 4) label19.Text = "LY";
+            if (placeInOrbit && double.TryParse(textBox12.Text, out double result) && result > 0)
+            {
+                if(defaultUnit < 3)
+                    spawnDistance = result * Math.Pow(1000, defaultUnit) + focus.Radius;
+                else
+                {
+                    if(defaultUnit == 3) spawnDistance = result * SharedData.AU + focus.Radius;
+                    else if(defaultUnit == 4) spawnDistance = result * SharedData.LightYear + focus.Radius; 
+                }
+            }
         }
 
         private void button26_Click(object sender, EventArgs e)
