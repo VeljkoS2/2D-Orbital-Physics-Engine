@@ -52,6 +52,11 @@ namespace _2D_Orbital_Physics_Engine
                 if (throttling)
                 {
                     focus.Throttle += 0.5;
+                    if(focus.Landed)
+                    {
+                        focus.Landed = false;
+                        focus.LifitngOff = true;
+                    }
                 }
                 else if (dethrottling)
                 {
@@ -171,6 +176,17 @@ namespace _2D_Orbital_Physics_Engine
             return -1;
         }
 
+        void KeepLanded(Celestial_Body body)
+        {
+            body.Velocity = body.LandedBody.Velocity;
+            Vector angPos = ~(body.Position - body.LandedBody.Position);
+            body.Position = body.LandedBody.Position + ~(body.Position - body.LandedBody.Position) % body.LandedBody.Radius;
+            body.DirAngleSS = (float)(Math.Atan2(angPos.X, -angPos.Y) * (180 / Math.PI));
+            body.Throttle = 0;
+            body.Free = true;
+            if (focus == body && !customRadioButton5.Checked) customRadioButton5.Checked = true;
+        }
+
         void EAT()
         {
             for (int i = 0; i < SharedData.bodies.Count - 1; i++)
@@ -183,8 +199,34 @@ namespace _2D_Orbital_Physics_Engine
                     if (Math.Abs(dxEat) > maxR || Math.Abs(dyEat) > maxR) continue;
                     double distSqr = dxEat * dxEat + dyEat * dyEat;
 
+                    if (SharedData.bodies[i] is Spaceship ^ SharedData.bodies[j] is Spaceship)
+                    {
+                        if (SharedData.bodies[i] is Spaceship si && si.LifitngOff)
+                        {
+                            if(distSqr > (SharedData.bodies[i].Radius + SharedData.bodies[j].Radius) * (SharedData.bodies[i].Radius + SharedData.bodies[j].Radius)) si.LifitngOff = false;      
+                        }
+                        else if (SharedData.bodies[j] is Spaceship sj && sj.LifitngOff)
+                        {
+                            if (distSqr > (SharedData.bodies[i].Radius + SharedData.bodies[j].Radius) * (SharedData.bodies[i].Radius + SharedData.bodies[j].Radius)) sj.LifitngOff = false;
+                        }
+                    }
+
                     if (distSqr <= (SharedData.bodies[i].Radius + SharedData.bodies[j].Radius) * (SharedData.bodies[i].Radius + SharedData.bodies[j].Radius))
                     {
+                        if (SharedData.bodies[i] is Spaceship ^ SharedData.bodies[j] is Spaceship)
+                        {
+                            if (SharedData.bodies[i] is Spaceship si && !si.LifitngOff)
+                            {
+                                si.Landed = true;
+                                si.LandedBody = SharedData.bodies[j];
+                            }
+                            else if (SharedData.bodies[j] is Spaceship sj && !sj.LifitngOff)
+                            {
+                                sj.Landed = true;
+                                sj.LandedBody = SharedData.bodies[i];
+                            }
+                            continue;
+                        }
                         if (SharedData.bodies[i].Mass > SharedData.bodies[j].Mass)
                         {
                             SharedData.bodies[i].Mass += SharedData.bodies[j].Mass;
@@ -437,6 +479,18 @@ namespace _2D_Orbital_Physics_Engine
                 {
                     for (int j = i + 1; j < SharedData.bodies.Count; j++)
                     {
+                        if (SharedData.bodies[i].Landed || SharedData.bodies[j].Landed)
+                        {
+                            if (SharedData.bodies[i].Landed)
+                            {
+                                KeepLanded(SharedData.bodies[i]);
+                            }
+                            if(SharedData.bodies[j].Landed)
+                            {
+                                KeepLanded(SharedData.bodies[j]);             
+                            }
+                            continue;
+                        }
                         Vector r = SharedData.bodies[j].Position - SharedData.bodies[i].Position;
                         double distSq = r.SquaredMagnitude();
                         if (distSq < (SharedData.bodies[i].Radius + SharedData.bodies[j].Radius) * (SharedData.bodies[i].Radius + SharedData.bodies[j].Radius))
@@ -525,10 +579,14 @@ namespace _2D_Orbital_Physics_Engine
 
                     if (SharedData.bodies[i] is Spaceship ship && ship.Throttle > 0)
                     {
-                        double thrustAcc = ship.Thrust * ship.InvMass * (ship.Throttle / 100.0);
+                        double thrustAcc = ship.Thrust/3.0 * ship.InvMass * (ship.Throttle / 100.0);
                         double angleRad = (ship.DirAngleSS - 90) * Math.PI / 180.0;
                         SharedData.bodies[i].Velocity.X += Math.Cos(angleRad) * thrustAcc * (d * subDt);
                         SharedData.bodies[i].Velocity.Y += Math.Sin(angleRad) * thrustAcc * (d * subDt);
+                        if(SharedData.bodies[i].Velocity.X <= 0 && SharedData.bodies[i].Velocity.Y <= 0)
+                        {
+                            if (focus == SharedData.bodies[i] && !customRadioButton5.Checked) customRadioButton5.Checked = true;
+                        }
                     }
                 }
             }
@@ -685,6 +743,7 @@ namespace _2D_Orbital_Physics_Engine
             return true;
 
         }
+
         protected override void OnPaintBackground(PaintEventArgs e) { }
         Celestial_Body preview;
         SolidBrush SOIBrush = new SolidBrush(Color.FromArgb(25, Color.White));
@@ -692,10 +751,9 @@ namespace _2D_Orbital_Physics_Engine
 
         Pen[] gridPens =
             [new Pen(Color.FromArgb(30, Color.White), 2f),
-            new Pen(Color.FromArgb(20, Color.White), 1.5f),
-            new Pen(Color.FromArgb(10, Color.White), 1.5f),
-            new Pen(Color.FromArgb(5, Color.White), 1.5f),
-            new Pen(Color.FromArgb(2, Color.White), 1.5f)];
+            new Pen(Color.FromArgb(20, Color.White), 1f),
+            new Pen(Color.FromArgb(15, Color.White), 1f),
+            new Pen(Color.FromArgb(10, Color.White), 1f)];
 
         SolidBrush gridNumBrush = new SolidBrush(Color.FromArgb(30, Color.White));
 
@@ -708,9 +766,8 @@ namespace _2D_Orbital_Physics_Engine
             g.DrawLine(gridPens[0], SharedData.ClampFloat((float)cx), 0, SharedData.ClampFloat((float)cx), SharedData.SH);
 
             double worldSpacing = SharedData.AU;
-            while (worldSpacing / SharedData.Scale > 300) worldSpacing /= 10.0;
-            while (worldSpacing / SharedData.Scale < 100) worldSpacing *= 10.0;
-
+            while (worldSpacing / SharedData.Scale > 100) worldSpacing /= 5.0;
+            while (worldSpacing / SharedData.Scale < 100) worldSpacing *= 5.0;
             double spacing = worldSpacing / SharedData.Scale;
 
             DrawGrid(g, cx, cy, spacing, 1);
@@ -734,7 +791,11 @@ namespace _2D_Orbital_Physics_Engine
                 if (depth == 1)
                 {
                     double worldX = SharedData.PutInWorldPosScaleX(x);
+                    string cord = SharedData.SizeScale(worldX);
+                    Size cordS = TextRenderer.MeasureText(cord, DefaultFont);
                     g.DrawString(SharedData.SizeScale(worldX), DefaultFont, gridNumBrush, (float)x + 2, (float)cy + 2);
+                    g.DrawString(SharedData.SizeScale(worldX), DefaultFont, gridNumBrush, (float)x + 2, 2);
+                    g.DrawString(SharedData.SizeScale(worldX), DefaultFont, gridNumBrush, (float)x + 2, SharedData.SH - cordS.Height-2);
                 }
             }
 
@@ -744,7 +805,11 @@ namespace _2D_Orbital_Physics_Engine
                 if (depth == 1)
                 {
                     double worldY = SharedData.PutInWorldPosScaleY(y);
+                    string cord = SharedData.SizeScale(worldY);
+                    Size cordS = TextRenderer.MeasureText(cord, DefaultFont);
                     g.DrawString(SharedData.SizeScale(worldY), DefaultFont, gridNumBrush, (float)cx + 2, (float)y + 2);
+                    g.DrawString(SharedData.SizeScale(worldY), DefaultFont, gridNumBrush, 2, (float)y + 2);
+                    g.DrawString(SharedData.SizeScale(worldY), DefaultFont, gridNumBrush, SharedData.SW -cordS.Width-2, (float)y + 2);
                 }
             }
 
@@ -757,8 +822,8 @@ namespace _2D_Orbital_Physics_Engine
             g.DrawLine(pen, SharedData.SW - 30, SharedData.SH - 60, SharedData.SW - 30, SharedData.SH - 40);
             g.DrawLine(pen, SharedData.SW - 330, SharedData.SH - 60, SharedData.SW - 330, SharedData.SH - 40);
             string sizeScale = SharedData.SizeScale();
-            Size textWidth = TextRenderer.MeasureText(sizeScale, Control.DefaultFont);
-            g.DrawString(SharedData.SizeScale(), Control.DefaultFont, brush, SharedData.SW - 330 - textWidth.Width / 2.0f, SharedData.SH - 80);
+            Size textWidth = TextRenderer.MeasureText(sizeScale, DefaultFont);
+            g.DrawString(SharedData.SizeScale(), DefaultFont, brush, SharedData.SW - 330 - textWidth.Width / 2.0f, SharedData.SH - 80);
         }
         string startSpeed = "0";
         void DrawPreviewOrbit(Graphics g)
@@ -777,7 +842,7 @@ namespace _2D_Orbital_Physics_Engine
                 preview.DrawOrbit(g, SharedData.Offset, SharedData.Scale, SharedData.SW, SharedData.SH);
                 preview.Draw(g, SharedData.Offset, SharedData.SW, SharedData.SH);
                 g.DrawLine(pen, MoveStart, currLocation);
-                g.DrawString(startSpeed + " m/s", Control.DefaultFont, brush, MoveStart);
+                g.DrawString(startSpeed + " m/s", DefaultFont, brush, MoveStart);
 
                 foreach (Celestial_Body target in SharedData.bodies)
                 {
@@ -790,7 +855,7 @@ namespace _2D_Orbital_Physics_Engine
                         float ix = SharedData.PutInScreenPosScaleXClamp(preview.Intersection.X);
                         float iy = SharedData.PutInScreenPosScaleYClamp(preview.Intersection.Y);
                         g.DrawEllipse(Pens.White, ix - 6, iy - 6, 12, 12);
-                        g.DrawString("Intersection", Control.DefaultFont, Brushes.White, ix + 10, iy - 10);
+                        g.DrawString("Intersection", DefaultFont, Brushes.White, ix + 10, iy - 10);
                     }
                 }
             }
@@ -814,7 +879,18 @@ namespace _2D_Orbital_Physics_Engine
             {
                 Vector distance = new Vector(currLocation.X, currLocation.Y) - new Vector(SharedData.SW / 2.0, SharedData.SH / 2.0);
                 double dist = !distance;
-                g.DrawString(SharedData.SizeScale(SharedData.PutInWorldScale(dist)) + " ( " + SharedData.SizeScale(SharedData.PutInWorldScale(dist) - focus.Radius) + " )", Control.DefaultFont, brush, currLocation.X + 15, currLocation.Y - 5);
+                if(dist < SharedData.PutInScreenScale(focus.Radius * 100) && dist > SharedData.PutInScreenScale(focus.Radius))
+                    g.DrawString(SharedData.SizeScale(SharedData.PutInWorldScale(dist)) + " ( " + SharedData.SizeScale(SharedData.PutInWorldScale(dist) - focus.Radius) + " )", DefaultFont, brush, currLocation.X + 15, currLocation.Y - 5);
+                else
+                    g.DrawString(SharedData.SizeScale(SharedData.PutInWorldScale(dist)), DefaultFont, brush, currLocation.X + 15, currLocation.Y - 5);
+            }
+        }
+
+        void DrawMouseCords(Graphics g)
+        {
+            if(!focused)
+            {
+                g.DrawString(SharedData.SizeScale(SharedData.PutInWorldPosScaleX(currLocation.X)) + ", " + SharedData.SizeScale(SharedData.PutInWorldPosScaleY(currLocation.Y)), DefaultFont, brush, currLocation.X + 15, currLocation.Y - 5);
             }
         }
         void DrawBodies(Graphics g)
@@ -830,19 +906,17 @@ namespace _2D_Orbital_Physics_Engine
                     int idx = (SharedData.bodies[i].TrailHead - count + j + 200) % 200;
                     SharedData.bodies[i].TrailPoints[j] = new PointF(SharedData.PutInScreenPosScaleXClamp(SharedData.bodies[i].Trail[idx].X), SharedData.PutInScreenPosScaleYClamp(SharedData.bodies[i].Trail[idx].Y));
                 }
-                if (count > 1)
+                if (count > 1 && !SharedData.bodies[i].Landed)
                 {
                     SharedData.bodies[i].UpdateTrailPath(SharedData.Offset, SharedData.Scale, SharedData.SW, SharedData.SH);
                     g.DrawPath(SharedData.bodies[i].TrailPen, SharedData.bodies[i].TrailPath);
                 }
-                if (SharedData.bodies.Count > 1 && SharedData.DrawOrbits)
+                if (SharedData.bodies.Count > 1 && SharedData.DrawOrbits && !SharedData.bodies[i].Landed)
                 {
                     SharedData.bodies[i].DrawOrbit(g, SharedData.Offset, SharedData.Scale, SharedData.SW, SharedData.SH);
                     SharedData.bodies[i].DrawPostSOIOrbit(g, SharedData.Offset, SharedData.Scale, SharedData.SW, SharedData.SH);
                 }
             }
-            //label4.Text = SharedData.intersectionsPredicted.ToString();
-            //SharedData.intersectionsPredicted = 0;
         }
         void DrawThrottleBar(Graphics g)
         {
@@ -858,7 +932,7 @@ namespace _2D_Orbital_Physics_Engine
                 g.FillRectangle(brush, SharedData.SW - 66, SharedData.SH / 2.0f + 346 - (float)focus.Throttle * 6.92f, 32, (float)focus.Throttle * 6.92f);
                 pen.Color = Color.White;
                 brush.Color = Color.White;
-                g.DrawString(focus.Throttle.ToString("#0") + "%", Control.DefaultFont, brush, SharedData.SW - 100, SharedData.SH / 2.0f + 340 - (float)focus.Throttle * 6.92f);
+                g.DrawString(focus.Throttle.ToString("#0") + "%", DefaultFont, brush, SharedData.SW - 100, SharedData.SH / 2.0f + 340 - (float)focus.Throttle * 6.92f);
             }
         }
 
@@ -872,7 +946,7 @@ namespace _2D_Orbital_Physics_Engine
                     float screenY = SharedData.PutInScreenPosScaleYClamp(SharedData.bodies[i].Intersection.Y);
 
                     g.FillEllipse(brush, screenX - 10, screenY - 10, 20, 20);
-                    g.DrawString(SharedData.TimeScale(SharedData.bodies[i].TimeToIntersection), Control.DefaultFont, brush, screenX + 30, screenY + 30);
+                    g.DrawString(SharedData.TimeScale(SharedData.bodies[i].TimeToIntersection), DefaultFont, brush, screenX + 30, screenY + 30);
                 }
             }
         }
@@ -944,6 +1018,7 @@ namespace _2D_Orbital_Physics_Engine
             }
             DrawScaleLine(g);
             DrawMouseDistanceFromFocus(g);
+            DrawMouseCords(g);
             DrawThrottleBar(g);
             if (SharedData.PredictIntersections)
             {
@@ -1369,6 +1444,7 @@ namespace _2D_Orbital_Physics_Engine
                         groupBox8.Visible = false;
                         button11.Text = "FOCUS";
                         groupBox9.Visible = true;
+                        currInd = comboBox2.SelectedIndex;
                         validMass = false;
                     }
                     else
@@ -1377,6 +1453,7 @@ namespace _2D_Orbital_Physics_Engine
                         button11.Text = "FOCUS";
                         groupBox8.Visible = false;
                         groupBox10.Visible = true;
+                        currInd = comboBox3.SelectedIndex;
                         validMass = false;
                     }
                 }

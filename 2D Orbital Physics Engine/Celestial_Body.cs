@@ -97,6 +97,10 @@ namespace _2D_Orbital_Physics_Engine
         public bool Antiradial { get; set; } = false;
         public bool Free { get; set; } = true;
         public double Thrust { get; set; } = 500000000;
+        public bool Landed { get; set; } = false;
+        public bool LifitngOff { get; set; } = false;
+        public Celestial_Body LandedBody { get; set; }
+   
 
         private bool _disposed = false;
         public void Dispose()
@@ -943,7 +947,7 @@ namespace _2D_Orbital_Physics_Engine
             float apoapsisX = SharedData.PutInScreenPosScaleXClamp(Apoapsis.X);
             float apoapsisY = SharedData.PutInScreenPosScaleYClamp(Apoapsis.Y);
 
-            if (aScreen < 10 && bScreen < 10) return;
+            if (aScreen < 20 && bScreen < 20) return;
             if (aScreen > 1e6f || bScreen > 1e6f) return;
             if (!CheckIfShouldDrawOrbit(aScreen, bScreen)) return;
 
