@@ -310,6 +310,12 @@ namespace _2D_Orbital_Physics_Engine
             groupBox6.Location = new Point(SharedData.SW / 2 + groupBox2.Size.Width / 2 + 10, SharedData.SH / 2 - groupBox2.Size.Height / 2);
             groupBox7.Location = new Point(SharedData.SW / 2 + groupBox2.Size.Width / 2 + 10, SharedData.SH / 2 - groupBox2.Size.Height / 2);
 
+            customRadioButton1.Symbol = 0;
+            customRadioButton2.Symbol = 1;
+            customRadioButton3.Symbol = 2; 
+            customRadioButton4.Symbol = 3;
+            customRadioButton5.Symbol = 4;
+
             /////////////////////////
             ///System Presets
             comboBox1.Items.Add("Complete Solar System");
@@ -832,7 +838,7 @@ namespace _2D_Orbital_Physics_Engine
             {
                 double worldX = SharedData.PutInWorldPosScaleX(MoveStart.X);
                 double worldY = SharedData.PutInWorldPosScaleY(MoveStart.Y);
-                preview = SharedData.CreaetBody(worldX, worldY, bodyMass, StartingVelocity, Color.FromArgb(120, Color.White));
+                preview = SharedData.CreateBody(worldX, worldY, bodyMass, StartingVelocity, Color.FromArgb(120, Color.White));
                 preview.DominantBody = focus;
                 preview.OrbitalDirty = true;
                 preview.HyperbolaDirty = true;
@@ -968,14 +974,14 @@ namespace _2D_Orbital_Physics_Engine
                 Vector velAtIntersect = (p1 - p0) % (1.0 / (2.0 * dt2));
 
                 Vector posAtIntersect = SharedData.bodies[i].IntersectingBody.GetPositionAtTime(SharedData.bodies[i].TimeToIntersection);
-                ghost = SharedData.CreaetBody(SharedData.bodies[i].Intersection.X, SharedData.bodies[i].Intersection.Y, SharedData.bodies[i].Mass, velAtIntersect, Color.Red);
+                ghost = SharedData.CreateBody(SharedData.bodies[i].Intersection.X, SharedData.bodies[i].Intersection.Y, SharedData.bodies[i].Mass, velAtIntersect, Color.Red);
 
                 dt2 = 0.01;
                 p0 = SharedData.bodies[i].IntersectingBody.GetPositionAtTime(SharedData.bodies[i].TimeToIntersection - dt2);
                 p1 = SharedData.bodies[i].IntersectingBody.GetPositionAtTime(SharedData.bodies[i].TimeToIntersection + dt2);
                 velAtIntersect = (p1 - p0) % (1.0 / (2.0 * dt2));
 
-                ghostTarget = SharedData.CreaetBody(posAtIntersect.X, posAtIntersect.Y, SharedData.bodies[i].IntersectingBody.Mass, velAtIntersect, Color.FromArgb(150, Color.White), SharedData.bodies[i].IntersectingBody.Name, SharedData.bodies[i].IntersectingBody.IsSaturn, SharedData.bodies[i].IntersectingBody.IsViltrum, SharedData.bodies[i].IntersectingBody.IsUranus, SharedData.bodies[i].IntersectingBody.IsNeptune);
+                ghostTarget = SharedData.CreateBody(posAtIntersect.X, posAtIntersect.Y, SharedData.bodies[i].IntersectingBody.Mass, velAtIntersect, Color.FromArgb(150, Color.White), SharedData.bodies[i].IntersectingBody.Name, SharedData.bodies[i].IntersectingBody.IsSaturn, SharedData.bodies[i].IntersectingBody.IsViltrum, SharedData.bodies[i].IntersectingBody.IsUranus, SharedData.bodies[i].IntersectingBody.IsNeptune);
 
                 ghost.DominantBody = ghostTarget;
                 ghostTarget.DominantBody = SharedData.bodies[i].IntersectingBody.DominantBody;
@@ -1193,7 +1199,7 @@ namespace _2D_Orbital_Physics_Engine
                         newBody.Acceleration = new Vector();
                         Vector worldClicked = new Vector(SharedData.PutInWorldPosScaleX(MoveStart.X), SharedData.PutInWorldPosScaleY(MoveStart.Y));
                         newBody = ChooseBody(worldClicked, StartingVelocity, currInd);
-                        if (newBody == null) newBody = SharedData.CreaetBody(worldClicked.X, worldClicked.Y, bodyMass, StartingVelocity);
+                        if (newBody == null) newBody = SharedData.CreateBody(worldClicked.X, worldClicked.Y, bodyMass, StartingVelocity);
                         if (pendingName != "") newBody.Name = pendingName;
                         SharedData.bodies.Add(newBody);
                         if (focused)
@@ -1216,7 +1222,7 @@ namespace _2D_Orbital_Physics_Engine
                         double dist = !(distV);
                         Vector velocity = focus.Velocity + (~(distVPerp) % CalcOrbitalVelocity(dist, focus.Mass + bodyMass));
                         newBody = ChooseBody(position, velocity, currInd);
-                        if (newBody == null) newBody = SharedData.CreaetBody(position.X, position.Y, bodyMass, velocity);
+                        if (newBody == null) newBody = SharedData.CreateBody(position.X, position.Y, bodyMass, velocity);
                         if (pendingName != "") newBody.Name = pendingName;
                         label23.Text = "Bodies: " + SharedData.bodies.Count.ToString();
                         newBody.DominantBody = focus;
@@ -2263,7 +2269,9 @@ namespace _2D_Orbital_Physics_Engine
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Color CheckColor { get; set; } = Color.Green;
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int RadioSize { get; set; } = 50; 
+        public int RadioSize { get; set; } = 50;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public int Symbol { get; set; }
 
         public CustomRadioButton()
         {
@@ -2282,7 +2290,7 @@ namespace _2D_Orbital_Physics_Engine
 
             using (Pen p = new Pen(Color.DimGray, 2.0f))
             {
-                g.FillEllipse(new SolidBrush(Color.LightGray), radioRect);
+                g.FillEllipse(new SolidBrush(Color.IndianRed), radioRect);
                 g.DrawEllipse(p, 2.0f, 2.0f, rectSize-4, rectSize-4);
             }
 
@@ -2304,7 +2312,62 @@ namespace _2D_Orbital_Physics_Engine
 
             Rectangle textRect = new Rectangle(rectSize + 8, 0, Width - rectSize - 8, Height);
             TextRenderer.DrawText(g, Text, Font, textRect, ForeColor, TextFormatFlags.VerticalCenter | TextFormatFlags.Left);
+
+            if(Symbol == 0)
+            {
+                using (Pen p = new Pen(Color.GreenYellow, 3.0f))
+                {
+                    g.DrawEllipse(p, 17.5f, 17.5f, 15, 15);
+                    g.DrawEllipse(p, 24.5f, 24.5f, 1, 1);
+                    g.DrawLine(p, 10f, 25f, 18f, 25f);
+                    g.DrawLine(p, 40f, 25f, 32f, 25f);
+                    g.DrawLine(p, 25f, 10f, 25f, 18f);
+                }
+            }
+            else if (Symbol == 1)
+            {
+                using (Pen p = new Pen(Color.GreenYellow, 3.0f))
+                {
+                    g.DrawEllipse(p, 17.5f, 17.5f, 15, 15);
+                    g.DrawLine(p, 19.25f, 19.25f, 30, 30f);
+                    g.DrawLine(p, 30.75f, 19.25f, 20.25f, 30f);
+                    g.DrawLine(p, 13f, 34.75f, 20f, 28.75f);
+                    g.DrawLine(p, 37f, 34.75f, 30f, 28.75f);
+                    g.DrawLine(p, 25f, 10f, 25f, 18f);
+                }
+            }
+            else if (Symbol == 2)
+            {
+                using (Pen p = new Pen(Color.Cyan, 3.0f))
+                {
+                    g.DrawEllipse(p, 17.5f, 17.5f, 15, 15);
+                    g.DrawLine(p, 19.25f, 19.25f, 22.5f, 22.5f);
+                    g.DrawLine(p, 30.75f, 19.25f, 27.5f, 22.5f);
+                    g.DrawLine(p, 30f, 30f, 26.75f, 26.75f);
+                    g.DrawLine(p, 20.25f, 30f, 23.5f, 26.75f);
+                }
+            }
+            else if (Symbol == 3)
+            {
+                using (Pen p = new Pen(Color.Cyan, 3.0f))
+                {
+                    g.DrawEllipse(p, 17.5f, 17.5f, 15, 15);
+                    g.DrawEllipse(p, 24.5f, 24.5f, 1, 1);
+                    g.DrawLine(p, 19.25f, 19.25f, 16f, 16f);
+                    g.DrawLine(p, 30.75f, 19.25f, 34f, 16f);
+                    g.DrawLine(p, 30f, 30f, 34f, 34f);
+                    g.DrawLine(p, 20.25f, 30f, 16f, 34f);
+                }
+            }
+            else if (Symbol == 4)
+            {
+                using (Pen p = new Pen(Color.Orange, 3.0f))
+                {
+                    g.DrawEllipse(p, 17.5f, 17.5f, 15, 15);
+                    g.DrawLine(p, 20, 25, 30, 25);
+                }
+            }
         }
     }
-
 }
+

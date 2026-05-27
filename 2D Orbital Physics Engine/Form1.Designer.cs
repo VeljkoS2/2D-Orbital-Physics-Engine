@@ -184,7 +184,7 @@
             // 
             // groupBox1
             // 
-            groupBox1.BackColor = Color.DimGray;
+            groupBox1.BackColor = Color.Gray;
             groupBox1.Controls.Add(textBox14);
             groupBox1.Controls.Add(textBox11);
             groupBox1.Controls.Add(textBox9);
@@ -209,7 +209,7 @@
             // 
             // textBox14
             // 
-            textBox14.BackColor = Color.DimGray;
+            textBox14.BackColor = Color.Gray;
             textBox14.BorderStyle = BorderStyle.None;
             textBox14.Location = new Point(228, 128);
             textBox14.Name = "textBox14";
@@ -220,7 +220,7 @@
             // 
             // textBox11
             // 
-            textBox11.BackColor = Color.DimGray;
+            textBox11.BackColor = Color.Gray;
             textBox11.BorderStyle = BorderStyle.None;
             textBox11.Location = new Point(8, 157);
             textBox11.Name = "textBox11";
@@ -231,7 +231,7 @@
             // 
             // textBox9
             // 
-            textBox9.BackColor = Color.DimGray;
+            textBox9.BackColor = Color.Gray;
             textBox9.BorderStyle = BorderStyle.None;
             textBox9.Location = new Point(228, 157);
             textBox9.Name = "textBox9";
@@ -242,7 +242,7 @@
             // 
             // textBox10
             // 
-            textBox10.BackColor = Color.DimGray;
+            textBox10.BackColor = Color.Gray;
             textBox10.BorderStyle = BorderStyle.None;
             textBox10.Location = new Point(228, 186);
             textBox10.Name = "textBox10";
@@ -253,7 +253,7 @@
             // 
             // textBox7
             // 
-            textBox7.BackColor = Color.DimGray;
+            textBox7.BackColor = Color.Gray;
             textBox7.BorderStyle = BorderStyle.None;
             textBox7.Cursor = Cursors.Hand;
             textBox7.Location = new Point(49, 22);
@@ -276,7 +276,7 @@
             // 
             // textBox4
             // 
-            textBox4.BackColor = Color.DimGray;
+            textBox4.BackColor = Color.Gray;
             textBox4.BorderStyle = BorderStyle.None;
             textBox4.Location = new Point(228, 73);
             textBox4.Name = "textBox4";
@@ -297,7 +297,7 @@
             // 
             // textBox5
             // 
-            textBox5.BackColor = Color.DimGray;
+            textBox5.BackColor = Color.Gray;
             textBox5.BorderStyle = BorderStyle.None;
             textBox5.Location = new Point(228, 100);
             textBox5.Name = "textBox5";
@@ -308,7 +308,7 @@
             // 
             // textBox6
             // 
-            textBox6.BackColor = Color.DimGray;
+            textBox6.BackColor = Color.Gray;
             textBox6.BorderStyle = BorderStyle.None;
             textBox6.Location = new Point(228, 45);
             textBox6.Name = "textBox6";
@@ -329,7 +329,7 @@
             // 
             // textBox3
             // 
-            textBox3.BackColor = Color.DimGray;
+            textBox3.BackColor = Color.Gray;
             textBox3.BorderStyle = BorderStyle.None;
             textBox3.Location = new Point(8, 102);
             textBox3.Name = "textBox3";
@@ -340,7 +340,7 @@
             // 
             // textBox1
             // 
-            textBox1.BackColor = Color.DimGray;
+            textBox1.BackColor = Color.Gray;
             textBox1.BorderStyle = BorderStyle.None;
             textBox1.Location = new Point(8, 73);
             textBox1.Name = "textBox1";
@@ -351,7 +351,7 @@
             // 
             // textBox2
             // 
-            textBox2.BackColor = Color.DimGray;
+            textBox2.BackColor = Color.Gray;
             textBox2.BorderStyle = BorderStyle.None;
             textBox2.Location = new Point(8, 128);
             textBox2.Name = "textBox2";
@@ -362,7 +362,7 @@
             // 
             // groupBox2
             // 
-            groupBox2.BackColor = Color.DimGray;
+            groupBox2.BackColor = Color.Gray;
             groupBox2.Controls.Add(checkBox2);
             groupBox2.Controls.Add(button15);
             groupBox2.Controls.Add(button2);
@@ -522,7 +522,9 @@
             // 
             // comboBox1
             // 
+            comboBox1.BackColor = Color.FromArgb(255, 255, 192);
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox1.FlatStyle = FlatStyle.Popup;
             comboBox1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             comboBox1.FormattingEnabled = true;
             comboBox1.Location = new Point(212, 43);
@@ -582,8 +584,9 @@
             // 
             // comboBox4
             // 
-            comboBox4.BackColor = Color.FromArgb(255, 128, 128);
+            comboBox4.BackColor = Color.FromArgb(192, 192, 255);
             comboBox4.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox4.FlatStyle = FlatStyle.Popup;
             comboBox4.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             comboBox4.FormattingEnabled = true;
             comboBox4.Location = new Point(125, 136);
@@ -682,6 +685,8 @@
             // 
             // comboBox2
             // 
+            comboBox2.BackColor = Color.FromArgb(255, 224, 192);
+            comboBox2.FlatStyle = FlatStyle.Popup;
             comboBox2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             comboBox2.FormattingEnabled = true;
             comboBox2.Location = new Point(6, 37);
@@ -764,7 +769,7 @@
             label21.AutoSize = true;
             label21.BackColor = Color.Transparent;
             label21.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            label21.ForeColor = Color.Lime;
+            label21.ForeColor = Color.GreenYellow;
             label21.Location = new Point(22, 75);
             label21.Name = "label21";
             label21.Size = new Size(71, 15);
@@ -776,7 +781,7 @@
             label22.AutoSize = true;
             label22.BackColor = Color.Transparent;
             label22.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            label22.ForeColor = Color.Lime;
+            label22.ForeColor = Color.GreenYellow;
             label22.Location = new Point(106, 75);
             label22.Name = "label22";
             label22.Size = new Size(85, 15);
@@ -833,7 +838,7 @@
             groupBox3.Controls.Add(customRadioButton4);
             groupBox3.Controls.Add(label21);
             groupBox3.Font = new Font("Segoe UI", 9F, FontStyle.Bold | FontStyle.Underline);
-            groupBox3.ForeColor = Color.FromArgb(224, 224, 224);
+            groupBox3.ForeColor = Color.White;
             groupBox3.Location = new Point(617, 782);
             groupBox3.Name = "groupBox3";
             groupBox3.Size = new Size(458, 100);
@@ -856,7 +861,7 @@
             // 
             // groupBox4
             // 
-            groupBox4.BackColor = Color.DimGray;
+            groupBox4.BackColor = Color.Gray;
             groupBox4.Controls.Add(label44);
             groupBox4.Controls.Add(button17);
             groupBox4.Controls.Add(button10);
@@ -988,7 +993,7 @@
             // 
             // groupBox5
             // 
-            groupBox5.BackColor = Color.DimGray;
+            groupBox5.BackColor = Color.Gray;
             groupBox5.Controls.Add(label45);
             groupBox5.Controls.Add(button18);
             groupBox5.Controls.Add(label35);
@@ -1081,7 +1086,7 @@
             // 
             // groupBox6
             // 
-            groupBox6.BackColor = Color.DimGray;
+            groupBox6.BackColor = Color.Gray;
             groupBox6.Controls.Add(label46);
             groupBox6.Controls.Add(button16);
             groupBox6.Controls.Add(label36);
@@ -1174,7 +1179,7 @@
             // 
             // groupBox7
             // 
-            groupBox7.BackColor = Color.DimGray;
+            groupBox7.BackColor = Color.Gray;
             groupBox7.Controls.Add(label48);
             groupBox7.Controls.Add(button19);
             groupBox7.Controls.Add(label38);
@@ -1253,7 +1258,7 @@
             // 
             // groupBox8
             // 
-            groupBox8.BackColor = Color.DimGray;
+            groupBox8.BackColor = Color.Gray;
             groupBox8.Controls.Add(button14);
             groupBox8.Controls.Add(textBox8);
             groupBox8.Controls.Add(button13);
@@ -1284,7 +1289,7 @@
             // 
             // textBox8
             // 
-            textBox8.BackColor = Color.Silver;
+            textBox8.BackColor = Color.FromArgb(192, 255, 192);
             textBox8.BorderStyle = BorderStyle.FixedSingle;
             textBox8.Cursor = Cursors.Hand;
             textBox8.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
@@ -1297,7 +1302,7 @@
             // 
             // button13
             // 
-            button13.BackColor = Color.LightGray;
+            button13.BackColor = Color.FromArgb(192, 255, 192);
             button13.FlatStyle = FlatStyle.Popup;
             button13.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             button13.Location = new Point(113, 90);
@@ -1310,7 +1315,7 @@
             // 
             // button12
             // 
-            button12.BackColor = Color.LightGray;
+            button12.BackColor = Color.FromArgb(255, 128, 128);
             button12.FlatStyle = FlatStyle.Popup;
             button12.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             button12.Location = new Point(6, 61);
@@ -1323,7 +1328,7 @@
             // 
             // button11
             // 
-            button11.BackColor = Color.LightGray;
+            button11.BackColor = Color.FromArgb(255, 255, 192);
             button11.FlatStyle = FlatStyle.Popup;
             button11.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             button11.Location = new Point(6, 32);
@@ -1336,7 +1341,7 @@
             // 
             // groupBox9
             // 
-            groupBox9.BackColor = Color.DimGray;
+            groupBox9.BackColor = Color.Gray;
             groupBox9.Controls.Add(comboBox4);
             groupBox9.Controls.Add(textBox12);
             groupBox9.Controls.Add(checkBox1);
@@ -1357,7 +1362,7 @@
             // 
             // textBox12
             // 
-            textBox12.BackColor = Color.Silver;
+            textBox12.BackColor = Color.FromArgb(192, 192, 255);
             textBox12.BorderStyle = BorderStyle.FixedSingle;
             textBox12.Cursor = Cursors.Hand;
             textBox12.Enabled = false;
@@ -1385,7 +1390,7 @@
             // 
             // textBox13
             // 
-            textBox13.BackColor = Color.Silver;
+            textBox13.BackColor = Color.FromArgb(192, 255, 192);
             textBox13.BorderStyle = BorderStyle.FixedSingle;
             textBox13.Cursor = Cursors.Hand;
             textBox13.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
@@ -1399,7 +1404,7 @@
             // 
             // button21
             // 
-            button21.BackColor = Color.LightGray;
+            button21.BackColor = Color.FromArgb(192, 255, 255);
             button21.FlatStyle = FlatStyle.Popup;
             button21.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             button21.Location = new Point(52, 171);
@@ -1451,7 +1456,7 @@
             // 
             // groupBox10
             // 
-            groupBox10.BackColor = Color.DimGray;
+            groupBox10.BackColor = Color.Gray;
             groupBox10.Controls.Add(textBox15);
             groupBox10.Controls.Add(button22);
             groupBox10.Controls.Add(label4);
@@ -1469,7 +1474,7 @@
             // 
             // textBox15
             // 
-            textBox15.BackColor = Color.Silver;
+            textBox15.BackColor = Color.FromArgb(192, 255, 192);
             textBox15.BorderStyle = BorderStyle.FixedSingle;
             textBox15.Cursor = Cursors.Hand;
             textBox15.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
@@ -1483,7 +1488,7 @@
             // 
             // button22
             // 
-            button22.BackColor = Color.LightGray;
+            button22.BackColor = Color.FromArgb(192, 255, 255);
             button22.FlatStyle = FlatStyle.Popup;
             button22.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             button22.Location = new Point(52, 111);
@@ -1535,6 +1540,8 @@
             // 
             // comboBox3
             // 
+            comboBox3.BackColor = Color.FromArgb(255, 224, 192);
+            comboBox3.FlatStyle = FlatStyle.Popup;
             comboBox3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             comboBox3.FormattingEnabled = true;
             comboBox3.Location = new Point(6, 37);
@@ -1546,7 +1553,7 @@
             // 
             // groupBox11
             // 
-            groupBox11.BackColor = Color.DimGray;
+            groupBox11.BackColor = Color.Gray;
             groupBox11.Controls.Add(label47);
             groupBox11.Controls.Add(button26);
             groupBox11.Controls.Add(label42);

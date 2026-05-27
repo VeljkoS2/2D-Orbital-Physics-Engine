@@ -229,7 +229,7 @@ namespace _2D_Orbital_Physics_Engine
                 return dist.ToString("N2") + " m";
             }
         }
-        public static Celestial_Body CreaetBody(double x, double y, double mass, Vector velocity, string name = "", bool isSaturn = false, bool isViltrum = false, bool isUranus = false, bool isNeptune = false)
+        public static Celestial_Body CreateBody(double x, double y, double mass, Vector velocity, string name = "", bool isSaturn = false, bool isViltrum = false, bool isUranus = false, bool isNeptune = false)
         {
             if (mass / SolarMass > 300)
             {
@@ -248,7 +248,7 @@ namespace _2D_Orbital_Physics_Engine
                 return new Spaceship(x, y, mass, velocity, name);
             }
         }
-        public static Celestial_Body CreaetBody(double x, double y, double mass, Vector velocity, Color color, string name = "", bool isSaturn = false, bool isViltrum = false, bool isUranus = false, bool isNeptune = false)
+        public static Celestial_Body CreateBody(double x, double y, double mass, Vector velocity, Color color, string name = "", bool isSaturn = false, bool isViltrum = false, bool isUranus = false, bool isNeptune = false)
         {
             if (mass / SolarMass > 300)
             {
