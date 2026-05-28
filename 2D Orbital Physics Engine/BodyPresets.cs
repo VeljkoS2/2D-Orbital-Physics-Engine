@@ -38,15 +38,15 @@ namespace _2D_Orbital_Physics_Engine
         }
         public static Celestial_Body SpawnSaturn(Vector pos, Vector vel)
         {
-            return SharedData.CreateBody(pos.X, pos.Y, SharedData.SaturnMass, vel, Color.BurlyWood, "Saturn", true);
+            return SharedData.CreateBody(pos.X, pos.Y, SharedData.SaturnMass, vel, Color.BurlyWood, "Saturn");
         }
         public static Celestial_Body SpawnUranus(Vector pos, Vector vel)
         {
-            return SharedData.CreateBody(pos.X, pos.Y, SharedData.UranusMass, vel, Color.Cyan, "Uranus", false, false, true);
+            return SharedData.CreateBody(pos.X, pos.Y, SharedData.UranusMass, vel, Color.Cyan, "Uranus");
         }
         public static Celestial_Body SpawnNeptune(Vector pos, Vector vel)
         {
-            return SharedData.CreateBody(pos.X, pos.Y, SharedData.NeptuneMass, vel, Color.Blue, "Neptune", false, false, false, true);
+            return SharedData.CreateBody(pos.X, pos.Y, SharedData.NeptuneMass, vel, Color.Blue, "Neptune");
         }
         public static Celestial_Body SpawnPluto(Vector pos, Vector vel)
         {
@@ -62,7 +62,7 @@ namespace _2D_Orbital_Physics_Engine
         }
         public static Celestial_Body SpawnViltrum(Vector pos, Vector vel)
         {
-            return SharedData.CreateBody(pos.X, pos.Y, SharedData.ViltrumMass, vel, Color.DarkCyan, "Viltrum", false, true);
+            return SharedData.CreateBody(pos.X, pos.Y, SharedData.ViltrumMass, vel, Color.DarkCyan, "Viltrum");
         }
     }
 }

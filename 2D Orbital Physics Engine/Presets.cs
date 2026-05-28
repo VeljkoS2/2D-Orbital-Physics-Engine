@@ -171,7 +171,7 @@ namespace _2D_Orbital_Physics_Engine
             //////////////////////////////////////////
             /// Saturn System
             var (posSat, velSat) = OrbitalElements(SharedData.SolarMass, 9.535 * SharedData.AU, 5.370e-2, 3.385e2, 6.266e1, new Vector(), new Vector());
-            SharedData.bodies.Add(SharedData.CreateBody(posSat.X, posSat.Y, SharedData.SaturnMass, velSat, Color.BurlyWood, "Saturn", true));
+            SharedData.bodies.Add(SharedData.CreateBody(posSat.X, posSat.Y, SharedData.SaturnMass, velSat, Color.BurlyWood, "Saturn"));
 
             var (posEnc, velEnc) = OrbitalElements(SharedData.SaturnMass, 1.593e-3 * SharedData.AU, 3.524e-3, 6.731e1, 1.374e2, posSat, velSat);
             SharedData.bodies.Add(SharedData.CreateBody(posEnc.X, posEnc.Y, SharedData.EnceladusMass, velEnc, Color.LightCyan, "Enceladus"));
@@ -194,7 +194,7 @@ namespace _2D_Orbital_Physics_Engine
             //////////////////////////////////////////
             /// Uranus System
             var (posUra, velUra) = OrbitalElements(SharedData.SolarMass, 1.922e1 * SharedData.AU, 4.572e-2, 9.892e1, 1.753e2, new Vector(), new Vector());
-            SharedData.bodies.Add(SharedData.CreateBody(posUra.X, posUra.Y, SharedData.UranusMass, velUra, Color.Cyan, "Uranus", false, false, true));
+            SharedData.bodies.Add(SharedData.CreateBody(posUra.X, posUra.Y, SharedData.UranusMass, velUra, Color.Cyan, "Uranus"));
 
             var (posTita, velTita) = OrbitalElements(SharedData.UranusMass, 2.916e-3 * SharedData.AU, 2.449e-3, 2.541e2, 5.564e1, posUra, velUra);
             SharedData.bodies.Add(SharedData.CreateBody(posTita.X, posTita.Y, SharedData.TitaniaMass, velTita, Color.LightSlateGray, "Titania"));
@@ -214,7 +214,7 @@ namespace _2D_Orbital_Physics_Engine
             //////////////////////////////////////////
             /// Neptune System
             var (posNep, velNep) = OrbitalElements(SharedData.SolarMass, 3.018e1 * SharedData.AU, 8.711e-3, 2.463e2, 3.036e2, new Vector(), new Vector());
-            SharedData.bodies.Add(SharedData.CreateBody(posNep.X, posNep.Y, SharedData.NeptuneMass, velNep, Color.Blue, "Neptune", false, false, false, true));
+            SharedData.bodies.Add(SharedData.CreateBody(posNep.X, posNep.Y, SharedData.NeptuneMass, velNep, Color.Blue, "Neptune"));
 
             var (posTri, velTri) = OrbitalElements(SharedData.NeptuneMass, 2.371e-3 * SharedData.AU, 2.777e-5, 2.060e2, 3.337e2, posNep, velNep);
             SharedData.bodies.Add(SharedData.CreateBody(posTri.X, posTri.Y, SharedData.TritonMass, velTri, Color.LightGray, "Triton"));
@@ -301,17 +301,17 @@ namespace _2D_Orbital_Physics_Engine
             //////////////////////////////////////////
             /// Saturn System
             var (posSat, velSat) = OrbitalElements(SharedData.SolarMass, 9.535 * SharedData.AU, 5.370e-2, 3.385e2, 6.266e1, new Vector(), new Vector());
-            SharedData.bodies.Add(SharedData.CreateBody(posSat.X, posSat.Y, SharedData.SaturnMass, velSat, Color.BurlyWood, "Saturn", true));
+            SharedData.bodies.Add(SharedData.CreateBody(posSat.X, posSat.Y, SharedData.SaturnMass, velSat, Color.BurlyWood, "Saturn"));
 
             //////////////////////////////////////////
 
             var (posUra, velUra) = OrbitalElements(SharedData.SolarMass, 1.922e1 * SharedData.AU, 4.572e-2, 9.892e1, 1.753e2, new Vector(), new Vector());
-            SharedData.bodies.Add(SharedData.CreateBody(posUra.X, posUra.Y, SharedData.UranusMass, velUra, Color.Cyan, "Uranus", false, false, true));
+            SharedData.bodies.Add(SharedData.CreateBody(posUra.X, posUra.Y, SharedData.UranusMass, velUra, Color.Cyan, "Uranus"));
 
             //////////////////////////////////////////
             /// Neptune System
             var (posNep, velNep) = OrbitalElements(SharedData.SolarMass, 3.018e1 * SharedData.AU, 8.711e-3, 2.463e2, 3.036e2, new Vector(), new Vector());
-            SharedData.bodies.Add(SharedData.CreateBody(posNep.X, posNep.Y, SharedData.NeptuneMass, velNep, Color.Blue, "Neptune", false, false, false, true));
+            SharedData.bodies.Add(SharedData.CreateBody(posNep.X, posNep.Y, SharedData.NeptuneMass, velNep, Color.Blue, "Neptune"));
 
             //////////////////////////////////////////
             /// Pluto System
@@ -365,7 +365,7 @@ namespace _2D_Orbital_Physics_Engine
         {
             SharedData.bodies.Clear();
 
-            SharedData.bodies.Add(SharedData.CreateBody(0, 0, SharedData.SaturnMass, new Vector(), Color.BurlyWood, "Saturn", true));
+            SharedData.bodies.Add(SharedData.CreateBody(0, 0, SharedData.SaturnMass, new Vector(), Color.BurlyWood, "Saturn"));
 
             var (posEnc, velEnc) = OrbitalElements(SharedData.SaturnMass, 1.593e-3 * SharedData.AU, 3.524e-3, 6.731e1, 1.374e2, new Vector(), new Vector());
             SharedData.bodies.Add(SharedData.CreateBody(posEnc.X, posEnc.Y, SharedData.EnceladusMass, velEnc, Color.LightCyan, "Enceladus"));
@@ -390,7 +390,7 @@ namespace _2D_Orbital_Physics_Engine
         {
             SharedData.bodies.Clear();
 
-            SharedData.bodies.Add(SharedData.CreateBody(0, 0, SharedData.UranusMass, new Vector(), Color.Cyan, "Uranus", false, false, true));
+            SharedData.bodies.Add(SharedData.CreateBody(0, 0, SharedData.UranusMass, new Vector(), Color.Cyan, "Uranus"));
 
             var (posTita, velTita) = OrbitalElements(SharedData.UranusMass, 2.916e-3 * SharedData.AU, 2.449e-3, 2.541e2, 5.564e1, new Vector(), new Vector());
             SharedData.bodies.Add(SharedData.CreateBody(posTita.X, posTita.Y, SharedData.TitaniaMass, velTita, Color.LightSlateGray, "Titania"));
@@ -412,7 +412,7 @@ namespace _2D_Orbital_Physics_Engine
         {
             SharedData.bodies.Clear();
 
-            SharedData.bodies.Add(SharedData.CreateBody(0, 0, SharedData.NeptuneMass, new Vector(), Color.Blue, "Neptune", false, false, false, true));
+            SharedData.bodies.Add(SharedData.CreateBody(0, 0, SharedData.NeptuneMass, new Vector(), Color.Blue, "Neptune"));
 
             var (posTri, velTri) = OrbitalElements(SharedData.NeptuneMass, 2.371e-3 * SharedData.AU, 2.777e-5, 2.060e2, 3.337e2, new Vector(), new Vector());
             SharedData.bodies.Add(SharedData.CreateBody(posTri.X, posTri.Y, SharedData.TritonMass, velTri, Color.LightGray, "Triton"));

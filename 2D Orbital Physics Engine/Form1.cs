@@ -27,6 +27,12 @@ namespace _2D_Orbital_Physics_Engine
             trackBar1.MouseWheel += (sender, e) => ((HandledMouseEventArgs)e).Handled = true;
 
         }
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            writer?.Flush();
+            writer?.Dispose();
+            base.OnFormClosing(e);
+        }
 
         Graphics g;
         double ZoomFactor = 1.3;
@@ -38,6 +44,8 @@ namespace _2D_Orbital_Physics_Engine
         bool Controling = false;
         bool focused = false;
         int actionInd = -1;
+        StreamWriter writer;
+        StreamReader reader;
 
         void RemoveBody(Celestial_Body body)
         {
@@ -52,7 +60,7 @@ namespace _2D_Orbital_Physics_Engine
                 if (throttling)
                 {
                     focus.Throttle += 0.5;
-                    if(focus.Landed)
+                    if (focus.Landed)
                     {
                         focus.Landed = false;
                         focus.LifitngOff = true;
@@ -87,7 +95,7 @@ namespace _2D_Orbital_Physics_Engine
                 textBox3.Text = "v = " + SharedData.SizeScale(!focus.Velocity) + "/s";
 
             textBox2.Text = "r = " + SharedData.SizeScale(focus.Radius);
-            textBox6.Text = "X: " + SharedData.SizeScale(focus.Position.X) + ", Y: " + SharedData.SizeScale(focus.Position.Y);
+            textBox6.Text = "X: " + SharedData.SizeScale(focus.Position.X) + ", Y: " + SharedData.SizeScale(-focus.Position.Y);
             textBox4.Text = "e = " + (!focus.E).ToString("N2");
 
             if (focus.DominantBody != null && !(focus.DominantBody.Position - focus.Position) < focus.DominantBody.Radius * 100)
@@ -203,7 +211,7 @@ namespace _2D_Orbital_Physics_Engine
                     {
                         if (SharedData.bodies[i] is Spaceship si && si.LifitngOff)
                         {
-                            if(distSqr > (SharedData.bodies[i].Radius + SharedData.bodies[j].Radius) * (SharedData.bodies[i].Radius + SharedData.bodies[j].Radius)) si.LifitngOff = false;      
+                            if (distSqr > (SharedData.bodies[i].Radius + SharedData.bodies[j].Radius) * (SharedData.bodies[i].Radius + SharedData.bodies[j].Radius)) si.LifitngOff = false;
                         }
                         else if (SharedData.bodies[j] is Spaceship sj && sj.LifitngOff)
                         {
@@ -246,6 +254,7 @@ namespace _2D_Orbital_Physics_Engine
                             {
                                 customRadioButton5.Checked = true;
                             }
+                            groupBox8.Visible = false;
                             RemoveBody(SharedData.bodies[j]);
                             i--;
                             break;
@@ -269,6 +278,7 @@ namespace _2D_Orbital_Physics_Engine
                             {
                                 customRadioButton5.Checked = true;
                             }
+                            groupBox8.Visible = false;
                             RemoveBody(SharedData.bodies[i]);
                             i--;
                             break;
@@ -286,6 +296,7 @@ namespace _2D_Orbital_Physics_Engine
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            reader = new StreamReader("SavedBodies.txt");
             SharedData.SW = ClientRectangle.Width;
             SharedData.SH = ClientRectangle.Height;
             timer1.Start();
@@ -312,7 +323,7 @@ namespace _2D_Orbital_Physics_Engine
 
             customRadioButton1.Symbol = 0;
             customRadioButton2.Symbol = 1;
-            customRadioButton3.Symbol = 2; 
+            customRadioButton3.Symbol = 2;
             customRadioButton4.Symbol = 3;
             customRadioButton5.Symbol = 4;
 
@@ -330,35 +341,23 @@ namespace _2D_Orbital_Physics_Engine
 
             /////////////////////////
             ///Body Presets
-            comboBox2.Items.Add("Sun");
-            comboBox2.Items.Add("Mercury");
-            comboBox2.Items.Add("Venus");
-            comboBox2.Items.Add("Earth");
-            comboBox2.Items.Add("Moon");
-            comboBox2.Items.Add("Mars");
-            comboBox2.Items.Add("Jupiter");
-            comboBox2.Items.Add("Saturn");
-            comboBox2.Items.Add("Uranus");
-            comboBox2.Items.Add("Neptune");
-            comboBox2.Items.Add("Pluto");
-            comboBox2.Items.Add("Sgr A* (BH)");
-            comboBox2.Items.Add("Spaceship");
-            comboBox2.Items.Add("Viltrum");
 
-            comboBox3.Items.Add("Sun");
-            comboBox3.Items.Add("Mercury");
-            comboBox3.Items.Add("Venus");
-            comboBox3.Items.Add("Earth");
-            comboBox3.Items.Add("Moon");
-            comboBox3.Items.Add("Mars");
-            comboBox3.Items.Add("Jupiter");
-            comboBox3.Items.Add("Saturn");
-            comboBox3.Items.Add("Uranus");
-            comboBox3.Items.Add("Neptune");
-            comboBox3.Items.Add("Pluto");
-            comboBox3.Items.Add("Sgr A* (BH)");
-            comboBox3.Items.Add("Spaceship");
-            comboBox3.Items.Add("Viltrum");
+            while (!reader.EndOfStream)
+            {
+                string[] input = reader.ReadLine().Split();
+                comboBox2.Items.Add(input[1]);
+                comboBox3.Items.Add(input[1]);
+                SharedData.SavedBodiesMass.Add(double.Parse(input[0]));
+                SharedData.SavedBodiesName.Add(input[1]);
+                if (Color.FromName(input[2]).A != 0)
+                    SharedData.SavedBodiesColor.Add(Color.FromName(input[2]));
+                else if (input[2] == "Empty")
+                    SharedData.SavedBodiesColor.Add(Color.Empty);
+                else
+                    SharedData.SavedBodiesColor.Add(Color.FromArgb((int)Convert.ToUInt32(input[2], 16)));
+            }
+            reader.Dispose();
+            writer = new StreamWriter("SavedBodies.txt", true);
 
             comboBox4.Items.Add("m");
             comboBox4.Items.Add("km");
@@ -491,9 +490,9 @@ namespace _2D_Orbital_Physics_Engine
                             {
                                 KeepLanded(SharedData.bodies[i]);
                             }
-                            if(SharedData.bodies[j].Landed)
+                            if (SharedData.bodies[j].Landed)
                             {
-                                KeepLanded(SharedData.bodies[j]);             
+                                KeepLanded(SharedData.bodies[j]);
                             }
                             continue;
                         }
@@ -585,11 +584,11 @@ namespace _2D_Orbital_Physics_Engine
 
                     if (SharedData.bodies[i] is Spaceship ship && ship.Throttle > 0)
                     {
-                        double thrustAcc = ship.Thrust/3.0 * ship.InvMass * (ship.Throttle / 100.0);
+                        double thrustAcc = ship.Thrust / 3.0 * ship.InvMass * (ship.Throttle / 100.0);
                         double angleRad = (ship.DirAngleSS - 90) * Math.PI / 180.0;
                         SharedData.bodies[i].Velocity.X += Math.Cos(angleRad) * thrustAcc * (d * subDt);
                         SharedData.bodies[i].Velocity.Y += Math.Sin(angleRad) * thrustAcc * (d * subDt);
-                        if(SharedData.bodies[i].Velocity.X <= 0 && SharedData.bodies[i].Velocity.Y <= 0)
+                        if (SharedData.bodies[i].Velocity.X <= 0 && SharedData.bodies[i].Velocity.Y <= 0)
                         {
                             if (focus == SharedData.bodies[i] && !customRadioButton5.Checked) customRadioButton5.Checked = true;
                         }
@@ -765,7 +764,7 @@ namespace _2D_Orbital_Physics_Engine
 
         void DrawGrid(Graphics g)
         {
-            double cx = SharedData.PutInScreenPosScaleXDouble(0); 
+            double cx = SharedData.PutInScreenPosScaleXDouble(0);
             double cy = SharedData.PutInScreenPosScaleYDouble(0);
 
             g.DrawLine(gridPens[0], 0, SharedData.ClampFloat((float)cy), SharedData.SW, SharedData.ClampFloat((float)cy));
@@ -799,9 +798,9 @@ namespace _2D_Orbital_Physics_Engine
                     double worldX = SharedData.PutInWorldPosScaleX(x);
                     string cord = SharedData.SizeScale(worldX);
                     Size cordS = TextRenderer.MeasureText(cord, DefaultFont);
-                    g.DrawString(SharedData.SizeScale(worldX), DefaultFont, gridNumBrush, (float)x + 2, (float)cy + 2);
-                    g.DrawString(SharedData.SizeScale(worldX), DefaultFont, gridNumBrush, (float)x + 2, 2);
-                    g.DrawString(SharedData.SizeScale(worldX), DefaultFont, gridNumBrush, (float)x + 2, SharedData.SH - cordS.Height-2);
+                    g.DrawString(cord, DefaultFont, gridNumBrush, (float)x + 2, (float)cy + 2);
+                    g.DrawString(cord, DefaultFont, gridNumBrush, (float)x + 2, 2);
+                    g.DrawString(cord, DefaultFont, gridNumBrush, (float)x + 2, SharedData.SH - cordS.Height - 2);
                 }
             }
 
@@ -811,11 +810,14 @@ namespace _2D_Orbital_Physics_Engine
                 if (depth == 1)
                 {
                     double worldY = SharedData.PutInWorldPosScaleY(y);
-                    string cord = SharedData.SizeScale(worldY);
+                    string cord = SharedData.SizeScale(-worldY);
+                    if (worldY == 0)
+                        cord = SharedData.SizeScale(worldY);
                     Size cordS = TextRenderer.MeasureText(cord, DefaultFont);
-                    g.DrawString(SharedData.SizeScale(worldY), DefaultFont, gridNumBrush, (float)cx + 2, (float)y + 2);
-                    g.DrawString(SharedData.SizeScale(worldY), DefaultFont, gridNumBrush, 2, (float)y + 2);
-                    g.DrawString(SharedData.SizeScale(worldY), DefaultFont, gridNumBrush, SharedData.SW -cordS.Width-2, (float)y + 2);
+                    if (worldY != 0)
+                        g.DrawString(cord, DefaultFont, gridNumBrush, (float)cx + 2, (float)y + 2);
+                    g.DrawString(cord, DefaultFont, gridNumBrush, 2, (float)y + 2);
+                    g.DrawString(cord, DefaultFont, gridNumBrush, SharedData.SW - cordS.Width - 2, (float)y + 2);
                 }
             }
 
@@ -885,7 +887,7 @@ namespace _2D_Orbital_Physics_Engine
             {
                 Vector distance = new Vector(currLocation.X, currLocation.Y) - new Vector(SharedData.SW / 2.0, SharedData.SH / 2.0);
                 double dist = !distance;
-                if(dist < SharedData.PutInScreenScale(focus.Radius * 100) && dist > SharedData.PutInScreenScale(focus.Radius))
+                if (dist < SharedData.PutInScreenScale(focus.Radius * 100) && dist > SharedData.PutInScreenScale(focus.Radius))
                     g.DrawString(SharedData.SizeScale(SharedData.PutInWorldScale(dist)) + " ( " + SharedData.SizeScale(SharedData.PutInWorldScale(dist) - focus.Radius) + " )", DefaultFont, brush, currLocation.X + 15, currLocation.Y - 5);
                 else
                     g.DrawString(SharedData.SizeScale(SharedData.PutInWorldScale(dist)), DefaultFont, brush, currLocation.X + 15, currLocation.Y - 5);
@@ -894,9 +896,9 @@ namespace _2D_Orbital_Physics_Engine
 
         void DrawMouseCords(Graphics g)
         {
-            if(!focused)
+            if (!focused)
             {
-                g.DrawString(SharedData.SizeScale(SharedData.PutInWorldPosScaleX(currLocation.X)) + ", " + SharedData.SizeScale(SharedData.PutInWorldPosScaleY(currLocation.Y)), DefaultFont, brush, currLocation.X + 15, currLocation.Y - 5);
+                g.DrawString(SharedData.SizeScale(SharedData.PutInWorldPosScaleX(currLocation.X)) + ", " + SharedData.SizeScale(-SharedData.PutInWorldPosScaleY(currLocation.Y)), DefaultFont, brush, currLocation.X + 15, currLocation.Y - 5);
             }
         }
         void DrawBodies(Graphics g)
@@ -981,7 +983,7 @@ namespace _2D_Orbital_Physics_Engine
                 p1 = SharedData.bodies[i].IntersectingBody.GetPositionAtTime(SharedData.bodies[i].TimeToIntersection + dt2);
                 velAtIntersect = (p1 - p0) % (1.0 / (2.0 * dt2));
 
-                ghostTarget = SharedData.CreateBody(posAtIntersect.X, posAtIntersect.Y, SharedData.bodies[i].IntersectingBody.Mass, velAtIntersect, Color.FromArgb(150, Color.White), SharedData.bodies[i].IntersectingBody.Name, SharedData.bodies[i].IntersectingBody.IsSaturn, SharedData.bodies[i].IntersectingBody.IsViltrum, SharedData.bodies[i].IntersectingBody.IsUranus, SharedData.bodies[i].IntersectingBody.IsNeptune);
+                ghostTarget = SharedData.CreateBody(posAtIntersect.X, posAtIntersect.Y, SharedData.bodies[i].IntersectingBody.Mass, velAtIntersect, Color.FromArgb(150, Color.White), SharedData.bodies[i].IntersectingBody.Name);
 
                 ghost.DominantBody = ghostTarget;
                 ghostTarget.DominantBody = SharedData.bodies[i].IntersectingBody.DominantBody;
@@ -1222,7 +1224,14 @@ namespace _2D_Orbital_Physics_Engine
                         double dist = !(distV);
                         Vector velocity = focus.Velocity + (~(distVPerp) % CalcOrbitalVelocity(dist, focus.Mass + bodyMass));
                         newBody = ChooseBody(position, velocity, currInd);
-                        if (newBody == null) newBody = SharedData.CreateBody(position.X, position.Y, bodyMass, velocity);
+                        if (newBody == null)
+                        {
+                            if (pendingColor == Color.Empty)
+                                newBody = SharedData.CreateBody(position.X, position.Y, bodyMass, velocity);
+                            else
+                                newBody = SharedData.CreateBody(position.X, position.Y, bodyMass, velocity, pendingColor);
+                            pendingColor = Color.Empty;
+                        }
                         if (pendingName != "") newBody.Name = pendingName;
                         label23.Text = "Bodies: " + SharedData.bodies.Count.ToString();
                         newBody.DominantBody = focus;
@@ -1452,6 +1461,7 @@ namespace _2D_Orbital_Physics_Engine
                         groupBox9.Visible = true;
                         currInd = comboBox2.SelectedIndex;
                         validMass = false;
+                        button28.BackColor = Color.White;
                     }
                     else
                     {
@@ -1461,6 +1471,7 @@ namespace _2D_Orbital_Physics_Engine
                         groupBox10.Visible = true;
                         currInd = comboBox3.SelectedIndex;
                         validMass = false;
+                        button29.BackColor = Color.White;
                     }
                 }
             }
@@ -1613,61 +1624,16 @@ namespace _2D_Orbital_Physics_Engine
 
         Celestial_Body ChooseBody(Vector pos, Vector vel, int ind)
         {
-            if (ind == 0)
+            if (currInd >= 0 && currInd < SharedData.SavedBodiesMass.Count)
             {
-                return BodyPresets.SpawnSun(pos, vel);
-            }
-            else if (ind == 1)
-            {
-                return BodyPresets.SpawnMercury(pos, vel);
-            }
-            else if (ind == 2.0f)
-            {
-                return BodyPresets.SpawnVenus(pos, vel);
-            }
-            else if (ind == 3)
-            {
-                return BodyPresets.SpawnEarth(pos, vel);
-            }
-            else if (ind == 4)
-            {
-                return BodyPresets.SpawnMoon(pos, vel);
-            }
-            else if (ind == 5)
-            {
-                return BodyPresets.SpawnMars(pos, vel);
-            }
-            else if (ind == 6)
-            {
-                return BodyPresets.SpawnJupiter(pos, vel);
-            }
-            else if (ind == 7)
-            {
-                return BodyPresets.SpawnSaturn(pos, vel);
-            }
-            else if (ind == 8)
-            {
-                return BodyPresets.SpawnUranus(pos, vel);
-            }
-            else if (ind == 9)
-            {
-                return BodyPresets.SpawnNeptune(pos, vel);
-            }
-            else if (ind == 10)
-            {
-                return BodyPresets.SpawnPluto(pos, vel);
-            }
-            else if (ind == 11)
-            {
-                return BodyPresets.SpawnSagittariusA(pos, vel);
-            }
-            else if (ind == 12)
-            {
-                return BodyPresets.SpawnSpaceship(pos, vel);
-            }
-            else if (ind == 13)
-            {
-                return BodyPresets.SpawnViltrum(pos, vel);
+                if(pendingColor == Color.Empty && pendingName == "")
+                    return SharedData.CreateBody(pos.X, pos.Y, SharedData.SavedBodiesMass[currInd], vel, SharedData.SavedBodiesColor[currInd], SharedData.SavedBodiesName[currInd]);
+                if(pendingColor == Color.Empty)
+                    return SharedData.CreateBody(pos.X, pos.Y, SharedData.SavedBodiesMass[currInd], vel, SharedData.SavedBodiesColor[currInd], pendingName);
+                if(pendingName == "")
+                    return SharedData.CreateBody(pos.X, pos.Y, SharedData.SavedBodiesMass[currInd], vel, pendingColor, SharedData.SavedBodiesName[currInd]);
+                return SharedData.CreateBody(pos.X, pos.Y, SharedData.SavedBodiesMass[currInd], vel, pendingColor, pendingName);
+                
             }
             return null;
         }
@@ -2254,6 +2220,30 @@ namespace _2D_Orbital_Physics_Engine
         {
             if (checkBox2.Checked) SharedData.drawGrid = true;
             else SharedData.drawGrid = false;
+        }
+
+        private void button27_Click(object sender, EventArgs e)
+        {
+            writer.WriteLine(SharedData.bodies[actionInd].Mass.ToString() + " " + SharedData.bodies[actionInd].Name + " " + SharedData.bodies[actionInd].Color.Name);
+            comboBox3.Items.Add(SharedData.bodies[actionInd].Name);
+            comboBox2.Items.Add(SharedData.bodies[actionInd].Name);
+            SharedData.SavedBodiesMass.Add(SharedData.bodies[actionInd].Mass);
+            SharedData.SavedBodiesName.Add(SharedData.bodies[actionInd].Name);
+            SharedData.SavedBodiesColor.Add(SharedData.bodies[actionInd].Color);
+        }
+        Color pendingColor = Color.Empty;
+        private void button29_Click(object sender, EventArgs e)
+        {
+            colorDialog1.ShowDialog();
+            pendingColor = colorDialog1.Color;
+            button29.BackColor = colorDialog1.Color;
+        }
+
+        private void button28_Click(object sender, EventArgs e)
+        {
+            colorDialog1.ShowDialog();
+            pendingColor = colorDialog1.Color;
+            button28.BackColor = colorDialog1.Color;
         }
     }
     public class SnapNumericUpDown : NumericUpDown

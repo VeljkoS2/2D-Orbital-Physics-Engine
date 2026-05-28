@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -32,7 +33,9 @@ namespace _2D_Orbital_Physics_Engine
         public static int SH { get; set; } = 0;
         public static Celestial_Body ghost { get; set; } = new Planet();
         public static float FloatLimit { get; set; } = 5e8f;
-        //public static int intersectionsPredicted = 0;
+        public static List<double> SavedBodiesMass { get; set; } = new List<double>();
+        public static List<string> SavedBodiesName { get; set; } = new List<string>();
+        public static List<Color> SavedBodiesColor { get; set; } = new List<Color>();
 
         public static List<Celestial_Body> bodies { get; set; } = new List<Celestial_Body>();
 
@@ -203,23 +206,23 @@ namespace _2D_Orbital_Physics_Engine
         }
         public static string SizeScale(double dist)
         {
-            dist = Math.Abs(dist);
-            if (dist > LightYear / 10)
+            double absDist = Math.Abs(dist);
+            if (absDist > LightYear / 10)
             {
                 dist /= LightYear;
                 return dist.ToString("N2") + " LY";
             }
-            else if (dist > AU / 10)
+            else if (absDist > AU / 10)
             {
                 dist /= AU;
                 return dist.ToString("N2") + " AU";
             }
-            else if (dist > 100000 * 1000.0)
+            else if (absDist > 100000 * 1000.0)
             {
                 dist /= 1000 * 1000.0;
                 return dist.ToString("N2") + " Mm";
             }
-            else if (dist > 100000)
+            else if (absDist > 100000)
             {
                 dist /= 1000.0;
                 return dist.ToString("N2") + " km";
@@ -229,7 +232,7 @@ namespace _2D_Orbital_Physics_Engine
                 return dist.ToString("N2") + " m";
             }
         }
-        public static Celestial_Body CreateBody(double x, double y, double mass, Vector velocity, string name = "", bool isSaturn = false, bool isViltrum = false, bool isUranus = false, bool isNeptune = false)
+        public static Celestial_Body CreateBody(double x, double y, double mass, Vector velocity, string name = "")
         {
             if (mass / SolarMass > 300)
             {
@@ -241,14 +244,14 @@ namespace _2D_Orbital_Physics_Engine
             }
             else if (mass > 1e7)
             {
-                return new Planet(x, y, mass, velocity, name, isSaturn, isViltrum, isUranus, isNeptune);
+                return new Planet(x, y, mass, velocity, name);
             }
             else
             {
                 return new Spaceship(x, y, mass, velocity, name);
             }
         }
-        public static Celestial_Body CreateBody(double x, double y, double mass, Vector velocity, Color color, string name = "", bool isSaturn = false, bool isViltrum = false, bool isUranus = false, bool isNeptune = false)
+        public static Celestial_Body CreateBody(double x, double y, double mass, Vector velocity, Color color, string name = "")
         {
             if (mass / SolarMass > 300)
             {
@@ -260,7 +263,7 @@ namespace _2D_Orbital_Physics_Engine
             }
             else if (mass > 1e7)
             {
-                return new Planet(x, y, mass, velocity, color, name, isSaturn, isViltrum, isUranus, isNeptune);
+                return new Planet(x, y, mass, velocity, color, name);
             }
             else
             {

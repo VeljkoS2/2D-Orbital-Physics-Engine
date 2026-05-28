@@ -1189,7 +1189,7 @@ namespace _2D_Orbital_Physics_Engine
     class Planet : Celestial_Body
     {
         List<Presets.BeltParticle> viltrumParticles = new List<Presets.BeltParticle>();
-        public Planet(double x, double y, double mass, Vector StartingVelocity, string name = "", bool isSaturn = false, bool isViltrum = false, bool isUranus = false, bool isNeptune = false) : base(x, y, mass, StartingVelocity, name)
+        public Planet(double x, double y, double mass, Vector StartingVelocity, string name = "") : base(x, y, mass, StartingVelocity, name)
         {
             Color = Color.FromArgb(Rnd.Next(0, 256), Rnd.Next(0, 256), Rnd.Next(0, 256));
             Pen.Color = Color.FromArgb(Color.A / 2, Color);
@@ -1197,12 +1197,16 @@ namespace _2D_Orbital_Physics_Engine
             OrbitPen.Color = Color.FromArgb(150, Color);
             OrbitalBrush.Color = Color.FromArgb(150, Color);
             TrailPen.Color = Color.FromArgb(40, Color);
-            IsSaturn = isSaturn;
-            IsViltrum = isViltrum;
-            IsUranus = isUranus;
-            IsNeptune = isNeptune;
+            if (name.ToUpper() == "SATURN")
+                IsSaturn = true;
+            if (name.ToUpper() == "VILTRUM")
+                IsViltrum = true;
+            if (name.ToUpper() == "URANUS")
+                IsUranus = true;
+            if (name.ToUpper() == "NEPTUNE")
+                IsNeptune = true;
         }
-        public Planet(double x, double y, double mass, Vector StartingVelocity, Color color, string name = "", bool isSaturn = false, bool isViltrum = false, bool isUranus = false, bool isNeptune = false) : base(x, y, mass, StartingVelocity, name)
+        public Planet(double x, double y, double mass, Vector StartingVelocity, Color color, string name = "") : base(x, y, mass, StartingVelocity, name)
         {
             Color = color;
             Pen.Color = Color.FromArgb(color.A / 2, color);
@@ -1210,10 +1214,14 @@ namespace _2D_Orbital_Physics_Engine
             OrbitPen.Color = Color.FromArgb(150, color);
             OrbitalBrush.Color = Color.FromArgb(150, color);
             TrailPen.Color = Color.FromArgb(40, color);
-            IsSaturn = isSaturn;
-            IsViltrum = isViltrum;
-            IsUranus = isUranus;
-            IsNeptune = isNeptune;
+            if (name.ToUpper() == "SATURN")
+                IsSaturn = true;
+            if (name.ToUpper() == "VILTRUM")
+                IsViltrum = true;
+            if (name.ToUpper() == "URANUS")
+                IsUranus = true;
+            if (name.ToUpper() == "NEPTUNE")
+                IsNeptune = true;
         }
         public Planet() { }
 
