@@ -320,6 +320,7 @@ namespace _2D_Orbital_Physics_Engine
             groupBox11.Location = new Point(SharedData.SW / 2 + groupBox2.Size.Width / 2 + 10, SharedData.SH / 2 - groupBox2.Size.Height / 2);
             groupBox6.Location = new Point(SharedData.SW / 2 + groupBox2.Size.Width / 2 + 10, SharedData.SH / 2 - groupBox2.Size.Height / 2);
             groupBox7.Location = new Point(SharedData.SW / 2 + groupBox2.Size.Width / 2 + 10, SharedData.SH / 2 - groupBox2.Size.Height / 2);
+            groupBox12.Location = new Point(SharedData.SW / 2 + groupBox2.Size.Width / 2 + 10, SharedData.SH / 2 - groupBox2.Size.Height / 2);
 
             customRadioButton1.Symbol = 0;
             customRadioButton2.Symbol = 1;
@@ -347,6 +348,7 @@ namespace _2D_Orbital_Physics_Engine
                 string[] input = reader.ReadLine().Split();
                 comboBox2.Items.Add(input[1]);
                 comboBox3.Items.Add(input[1]);
+                comboBox5.Items.Add(input[1]);
                 SharedData.SavedBodiesMass.Add(double.Parse(input[0]));
                 SharedData.SavedBodiesName.Add(input[1]);
                 if (Color.FromName(input[2]).A != 0)
@@ -1201,7 +1203,14 @@ namespace _2D_Orbital_Physics_Engine
                         newBody.Acceleration = new Vector();
                         Vector worldClicked = new Vector(SharedData.PutInWorldPosScaleX(MoveStart.X), SharedData.PutInWorldPosScaleY(MoveStart.Y));
                         newBody = ChooseBody(worldClicked, StartingVelocity, currInd);
-                        if (newBody == null) newBody = SharedData.CreateBody(worldClicked.X, worldClicked.Y, bodyMass, StartingVelocity);
+                        if (newBody == null)
+                        {
+                            if (pendingColor == Color.Empty)
+                                newBody = SharedData.CreateBody(worldClicked.X, worldClicked.Y, bodyMass, StartingVelocity);
+                            else
+                                newBody = SharedData.CreateBody(worldClicked.X, worldClicked.Y, bodyMass, StartingVelocity, pendingColor);
+                            pendingColor = Color.Empty;
+                        }
                         if (pendingName != "") newBody.Name = pendingName;
                         SharedData.bodies.Add(newBody);
                         if (focused)
@@ -1530,6 +1539,7 @@ namespace _2D_Orbital_Physics_Engine
                 groupBox9.Visible = false;
                 groupBox10.Visible = false;
                 groupBox11.Visible = false;
+                groupBox12.Visible = false;
             }
             else if (e.KeyCode == Keys.Right)
             {
@@ -1626,14 +1636,14 @@ namespace _2D_Orbital_Physics_Engine
         {
             if (currInd >= 0 && currInd < SharedData.SavedBodiesMass.Count)
             {
-                if(pendingColor == Color.Empty && pendingName == "")
+                if (pendingColor == Color.Empty && pendingName == "")
                     return SharedData.CreateBody(pos.X, pos.Y, SharedData.SavedBodiesMass[currInd], vel, SharedData.SavedBodiesColor[currInd], SharedData.SavedBodiesName[currInd]);
-                if(pendingColor == Color.Empty)
+                if (pendingColor == Color.Empty)
                     return SharedData.CreateBody(pos.X, pos.Y, SharedData.SavedBodiesMass[currInd], vel, SharedData.SavedBodiesColor[currInd], pendingName);
-                if(pendingName == "")
+                if (pendingName == "")
                     return SharedData.CreateBody(pos.X, pos.Y, SharedData.SavedBodiesMass[currInd], vel, pendingColor, SharedData.SavedBodiesName[currInd]);
                 return SharedData.CreateBody(pos.X, pos.Y, SharedData.SavedBodiesMass[currInd], vel, pendingColor, pendingName);
-                
+
             }
             return null;
         }
@@ -1768,6 +1778,7 @@ namespace _2D_Orbital_Physics_Engine
 
         private void button2_Click(object sender, EventArgs e)
         {
+            groupBox12.Visible = false;
             if (!groupBox4.Visible && !groupBox5.Visible && !groupBox6.Visible && !groupBox7.Visible)
                 groupBox4.Visible = true;
             else
@@ -2227,6 +2238,7 @@ namespace _2D_Orbital_Physics_Engine
             writer.WriteLine(SharedData.bodies[actionInd].Mass.ToString() + " " + SharedData.bodies[actionInd].Name + " " + SharedData.bodies[actionInd].Color.Name);
             comboBox3.Items.Add(SharedData.bodies[actionInd].Name);
             comboBox2.Items.Add(SharedData.bodies[actionInd].Name);
+            comboBox5.Items.Add(SharedData.bodies[actionInd].Name);
             SharedData.SavedBodiesMass.Add(SharedData.bodies[actionInd].Mass);
             SharedData.SavedBodiesName.Add(SharedData.bodies[actionInd].Name);
             SharedData.SavedBodiesColor.Add(SharedData.bodies[actionInd].Color);
@@ -2244,6 +2256,51 @@ namespace _2D_Orbital_Physics_Engine
             colorDialog1.ShowDialog();
             pendingColor = colorDialog1.Color;
             button28.BackColor = colorDialog1.Color;
+        }
+
+        private void button31_Click(object sender, EventArgs e)
+        {
+            groupBox12.Visible = false;
+        }
+
+        private void button32_Click(object sender, EventArgs e)
+        {
+            groupBox4.Visible = false;
+            groupBox5.Visible = false;
+            groupBox6.Visible = false;
+            groupBox7.Visible = false;
+            if (groupBox12.Visible) groupBox12.Visible = false;
+            else groupBox12.Visible = true;
+        }
+
+        int deletePresetIndex = -1;
+        private void comboBox5_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            deletePresetIndex = comboBox5.SelectedIndex;
+        }
+
+        private void button30_Click(object sender, EventArgs e)
+        {
+            if(deletePresetIndex == -1) return;
+            writer.Dispose();
+            var lines = File.ReadAllLines("SavedBodies.txt").ToList();
+            for (int i = lines.Count - 1; i >= 14; i--)
+            {
+                if (lines[i].Split(' ')[1] == SharedData.SavedBodiesName[deletePresetIndex])
+                    lines.RemoveAt(i);
+            }
+            File.WriteAllLines("SavedBodies.txt", lines);
+            writer = new StreamWriter("SavedBodies.txt", append: true);
+            if(deletePresetIndex >= 14)
+            {
+                comboBox5.Items.RemoveAt(deletePresetIndex);
+                comboBox3.Items.RemoveAt(deletePresetIndex);
+                comboBox2.Items.RemoveAt(deletePresetIndex);
+                SharedData.SavedBodiesName.RemoveAt(deletePresetIndex);
+                SharedData.SavedBodiesMass.RemoveAt(deletePresetIndex);
+                SharedData.SavedBodiesColor.RemoveAt(deletePresetIndex);
+            }
+            deletePresetIndex = -1;
         }
     }
     public class SnapNumericUpDown : NumericUpDown

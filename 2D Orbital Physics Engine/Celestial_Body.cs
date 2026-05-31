@@ -84,6 +84,8 @@ namespace _2D_Orbital_Physics_Engine
         public double AngleRad { get; set; } = 0;
         public double CosMAngle { get; set; } = 0;
         public double SinMAngle { get; set; } = 0;
+        public double trueAnomaly { get; set; } = 0;
+        public double trueAnomalyRad { get; set; } = 0;
         public bool HasIntersection { get; set; } = false;
         public double TimeToIntersection { get; set; } = 0;
         public Celestial_Body IntersectingBody { get; set; }
@@ -628,16 +630,6 @@ namespace _2D_Orbital_Physics_Engine
             return A * (1 - EScal * EScal) / (1 + EScal * Math.Cos(nu));
         }
 
-        public Vector TrueAnomalyToWorld(double nu)
-        {
-            double r = A * (1 - EScal * EScal) / (1 + EScal * Math.Cos(nu));
-            double angleRad = Angle * Math.PI / 180.0;
-            double localX = r * Math.Cos(nu);
-            double localY = r * Math.Sin(nu);
-            double worldX = DominantBody.Position.X + localX * Math.Cos(angleRad) - localY * Math.Sin(angleRad);
-            double worldY = DominantBody.Position.Y + localX * Math.Sin(angleRad) + localY * Math.Cos(angleRad);
-            return new Vector(worldX, worldY);
-        }
         public bool IsOnScreen(Vector offset, double scale, float screenW, float screenH)
         {
             float bScreenX = SharedData.PutInScreenPosScaleXClamp(Position.X);
@@ -740,6 +732,9 @@ namespace _2D_Orbital_Physics_Engine
             SinAngle = Math.Sin(AngleRad);
             CosMAngle = Math.Cos(-AngleRad);
             SinMAngle = Math.Sin(-AngleRad);
+            trueAnomaly = Math.Acos(E * relativeDistance / (EScal * distance));
+            trueAnomalyRad = trueAnomaly / (180 / Math.PI);
+            if (relativeDistance * E < 0) trueAnomaly = 2 * Math.PI - trueAnomaly;
             OrbitalDirty = false;
             HyperbolaDirty = false;
         }

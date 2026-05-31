@@ -48,6 +48,7 @@
             textBox1 = new TextBox();
             textBox2 = new TextBox();
             groupBox2 = new GroupBox();
+            button32 = new Button();
             checkBox2 = new CheckBox();
             button15 = new Button();
             button2 = new Button();
@@ -150,6 +151,11 @@
             button25 = new Button();
             label41 = new Label();
             colorDialog1 = new ColorDialog();
+            groupBox12 = new GroupBox();
+            button31 = new Button();
+            button30 = new Button();
+            label8 = new Label();
+            comboBox5 = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -164,6 +170,7 @@
             groupBox9.SuspendLayout();
             groupBox10.SuspendLayout();
             groupBox11.SuspendLayout();
+            groupBox12.SuspendLayout();
             SuspendLayout();
             // 
             // timer1
@@ -367,6 +374,7 @@
             // groupBox2
             // 
             groupBox2.BackColor = Color.Gray;
+            groupBox2.Controls.Add(button32);
             groupBox2.Controls.Add(checkBox2);
             groupBox2.Controls.Add(button15);
             groupBox2.Controls.Add(button2);
@@ -390,6 +398,19 @@
             groupBox2.TabStop = false;
             groupBox2.Text = "SETTINGS";
             groupBox2.Visible = false;
+            // 
+            // button32
+            // 
+            button32.BackColor = Color.FromArgb(255, 224, 192);
+            button32.FlatStyle = FlatStyle.Popup;
+            button32.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            button32.Location = new Point(314, 158);
+            button32.Name = "button32";
+            button32.Size = new Size(127, 23);
+            button32.TabIndex = 64;
+            button32.Text = "MANAGE PRESETS";
+            button32.UseVisualStyleBackColor = false;
+            button32.Click += button32_Click;
             // 
             // checkBox2
             // 
@@ -1715,12 +1736,81 @@
             label41.TabIndex = 31;
             label41.Text = "ACTION MENU";
             // 
+            // groupBox12
+            // 
+            groupBox12.BackColor = Color.Gray;
+            groupBox12.Controls.Add(button31);
+            groupBox12.Controls.Add(button30);
+            groupBox12.Controls.Add(label8);
+            groupBox12.Controls.Add(comboBox5);
+            groupBox12.Font = new Font("Segoe UI", 9F, FontStyle.Bold | FontStyle.Underline);
+            groupBox12.Location = new Point(667, 546);
+            groupBox12.Name = "groupBox12";
+            groupBox12.Size = new Size(191, 105);
+            groupBox12.TabIndex = 69;
+            groupBox12.TabStop = false;
+            groupBox12.Text = "MANAGE PRESETS";
+            groupBox12.Visible = false;
+            // 
+            // button31
+            // 
+            button31.BackColor = Color.Tomato;
+            button31.FlatStyle = FlatStyle.Popup;
+            button31.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            button31.ForeColor = Color.White;
+            button31.Location = new Point(170, 0);
+            button31.Name = "button31";
+            button31.Size = new Size(21, 23);
+            button31.TabIndex = 64;
+            button31.Text = "X";
+            button31.UseVisualStyleBackColor = false;
+            button31.Click += button31_Click;
+            // 
+            // button30
+            // 
+            button30.BackColor = Color.FromArgb(255, 128, 128);
+            button30.FlatStyle = FlatStyle.Popup;
+            button30.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            button30.Location = new Point(21, 76);
+            button30.Name = "button30";
+            button30.Size = new Size(148, 23);
+            button30.TabIndex = 63;
+            button30.Text = "REMOVE";
+            button30.UseVisualStyleBackColor = false;
+            button30.Click += button30_Click;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.BackColor = Color.Transparent;
+            label8.Font = new Font("Segoe UI", 9F, FontStyle.Bold | FontStyle.Underline);
+            label8.ForeColor = Color.Black;
+            label8.Location = new Point(6, 19);
+            label8.Name = "label8";
+            label8.Size = new Size(81, 15);
+            label8.TabIndex = 62;
+            label8.Text = "Saved Bodies";
+            // 
+            // comboBox5
+            // 
+            comboBox5.BackColor = Color.FromArgb(255, 224, 192);
+            comboBox5.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox5.FlatStyle = FlatStyle.Popup;
+            comboBox5.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            comboBox5.FormattingEnabled = true;
+            comboBox5.Location = new Point(6, 39);
+            comboBox5.Name = "comboBox5";
+            comboBox5.Size = new Size(179, 23);
+            comboBox5.TabIndex = 27;
+            comboBox5.SelectedIndexChanged += comboBox5_SelectedIndexChanged;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Black;
             ClientSize = new Size(1673, 912);
+            Controls.Add(groupBox12);
             Controls.Add(groupBox11);
             Controls.Add(groupBox10);
             Controls.Add(groupBox9);
@@ -1782,6 +1872,8 @@
             groupBox10.PerformLayout();
             groupBox11.ResumeLayout(false);
             groupBox11.PerformLayout();
+            groupBox12.ResumeLayout(false);
+            groupBox12.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1907,5 +1999,11 @@
         private Button button28;
         private Button button29;
         private ColorDialog colorDialog1;
+        private GroupBox groupBox12;
+        private ComboBox comboBox5;
+        private Button button31;
+        private Button button30;
+        private Label label8;
+        private Button button32;
     }
 }
