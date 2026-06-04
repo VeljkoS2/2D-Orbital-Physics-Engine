@@ -341,16 +341,9 @@ namespace _2D_Orbital_Physics_Engine
                 if (ApoapsisHeight < target.PeriapsisHeight - rSOI ||
                     target.ApoapsisHeight < PeriapsisHeight - rSOI) return false;
 
-                int samples = 32;
-                double step = 2 * Math.PI / samples;
-                for (int i = 0; i < samples; i++)
-                {
-                    double a1 = i * step;
-                    double r1 = OrbitalRadiusAtWorldAngle(a1);
-                    double r2 = target.OrbitalRadiusAtWorldAngle(a1);
-                    if (Math.Abs(r1 - r2) < rSOI) return true;
-                }
-                return false;
+                double separation = !(OrbitCenter - target.OrbitCenter);
+                if (separation > ApoapsisHeight + target.ApoapsisHeight + rSOI) return false;
+                return true;
             }
         }
 
@@ -928,7 +921,6 @@ namespace _2D_Orbital_Physics_Engine
                 return;
             }
 
-            //if (eScal >= 0.999) return;
             float aScreen = SharedData.PutInScreenScaleClamp(A);
             float bScreen = SharedData.PutInScreenScaleClamp(B);
 
@@ -955,7 +947,6 @@ namespace _2D_Orbital_Physics_Engine
                 g.DrawEllipse(OrbitPen, focus1X - 10, focus1Y - 10, 20, 20);
                 g.DrawEllipse(OrbitPen, focus2X - 10, focus2Y - 10, 20, 20);
             }
-            //SharedData.intersectionsPredicted++;
             g.TranslateTransform(SharedData.PutInScreenPosScaleXClamp(OrbitCenter.X), SharedData.PutInScreenPosScaleYClamp(OrbitCenter.Y));
             g.RotateTransform((float)Angle);
             g.DrawEllipse(OrbitPen, -aScreen, -bScreen, 2 * aScreen, 2 * bScreen);
@@ -1203,12 +1194,13 @@ namespace _2D_Orbital_Physics_Engine
         }
         public Planet(double x, double y, double mass, Vector StartingVelocity, Color color, string name = "") : base(x, y, mass, StartingVelocity, name)
         {
-            Color = color;
-            Pen.Color = Color.FromArgb(color.A / 2, color);
-            Brush.Color = color;
-            OrbitPen.Color = Color.FromArgb(150, color);
-            OrbitalBrush.Color = Color.FromArgb(150, color);
-            TrailPen.Color = Color.FromArgb(40, color);
+            if (color == Color.Empty) Color = Color.FromArgb(Rnd.Next(0, 256), Rnd.Next(0, 256), Rnd.Next(0, 256));
+            else Color = color;
+            Pen.Color = Color.FromArgb(Color.A / 2, Color);
+            Brush.Color = Color;
+            OrbitPen.Color = Color.FromArgb(150, Color);
+            OrbitalBrush.Color = Color.FromArgb(150, Color);
+            TrailPen.Color = Color.FromArgb(40, Color);
             if (name.ToUpper() == "SATURN")
                 IsSaturn = true;
             if (name.ToUpper() == "VILTRUM")
@@ -1445,12 +1437,13 @@ namespace _2D_Orbital_Physics_Engine
 
         public Spaceship(double x, double y, double mass, Vector StartingVelocity, Color color, string name = "") : base(x, y, mass, StartingVelocity, name)
         {
-            Color = color; 
-            Pen.Color = Color.FromArgb(color.A / 2, color);
-            Brush.Color = color;
-            OrbitPen.Color = Color.FromArgb(150, color);
-            OrbitalBrush.Color = Color.FromArgb(150, color);
-            TrailPen.Color = Color.FromArgb(40, color);
+            if(color == Color.Empty) Color = Color.FromArgb(Rnd.Next(0, 256), Rnd.Next(0, 256), Rnd.Next(0, 256));
+            else Color = color; 
+            Pen.Color = Color.FromArgb(Color.A / 2, Color);
+            Brush.Color = Color;
+            OrbitPen.Color = Color.FromArgb(150, Color);
+            OrbitalBrush.Color = Color.FromArgb(150, Color);
+            TrailPen.Color = Color.FromArgb(40, Color);
             CalcRadius();
         }
 

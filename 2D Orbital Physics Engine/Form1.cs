@@ -741,16 +741,6 @@ namespace _2D_Orbital_Physics_Engine
             Invalidate();
         }
 
-        bool IsOnScreen(float x, float y)
-        {
-            if (x < 0) return false;
-            if (x > SharedData.SW) return false;
-            if (y < 0) return false;
-            if (y > SharedData.SH) return false;
-            return true;
-
-        }
-
         protected override void OnPaintBackground(PaintEventArgs e) { }
         Celestial_Body preview;
         SolidBrush SOIBrush = new SolidBrush(Color.FromArgb(25, Color.White));
@@ -872,7 +862,7 @@ namespace _2D_Orbital_Physics_Engine
         }
         void DrawFocusSOI(Graphics g)
         {
-            if (focus != null && focus.DominantBody != null)
+            if (focused && focus.DominantBody != null)
             {
                 float rSOI = (float)SOI(focus, focus.DominantBody);
                 focus.DrawSOI(g, SharedData.SW, SharedData.SH, rSOI, SOIBrush);
